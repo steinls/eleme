@@ -7,17 +7,19 @@ import router from './router'
 import './common/stylus/index.styl'
 import fastclick from 'fastclick'
 import lazyload from 'vue-lazyload'
-import VConsole from 'vconsole'
+import vueRource from 'vue-resource'
 
 Vue.config.productionTip = false
 fastclick.attach(document.body)
 Vue.use(lazyload, {
   loading: 'static/loading/loading.png'
 })
-/* eslint-disable no-new */
+Vue.use(vueRource)
+
+/* eslint-disable */
+import VConsole from 'vconsole'
 new VConsole()
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
