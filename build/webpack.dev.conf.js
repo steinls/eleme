@@ -45,10 +45,30 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     before(app){
       let Router = require('express').Router()
-      let data = require('../mock/data.json')
+      let data = require('../data.json')
+      let seller = data.seller
+      let goods = data.goods
+      let ratings = data.ratings
 
-      Router.get('/data',function(req,res,next){
-        res.json(data)
+      Router.get('/seller', (req,res,next) => {
+        res.json({
+          errno: 0,
+          data: seller
+        })
+      })
+
+      Router.get('/goods', (req,res,next) => {
+        res.json({
+          errno: 0,
+          data: goods
+        })
+      })
+
+      Router.get('/ratings', (req,res,next) => {
+        res.json({
+          errno: 0,
+          data: ratings
+        })
       })
 
       app.use('/api',Router)
