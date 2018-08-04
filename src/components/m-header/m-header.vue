@@ -8,21 +8,11 @@
   </div>
 </template>
 <script>
-import {ERR_OK} from 'api/config'
 export default {
-  data() {
-    return {
-      seller: {}
+  props: {
+    seller: {
+      type: Object
     }
-  },
-  created() {
-    this.$http.get('/api/seller').then((response) => {
-      let data = response.body
-      if (data.errno === ERR_OK) {
-        this.seller = data.data
-      }
-      console.log(this.seller)
-    })
   }
 }
 </script>
