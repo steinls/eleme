@@ -47,29 +47,41 @@
       </div>
     </div>
 
-    <div class="sheet" v-if="offerDetail"></div>
+    <div class="sheet" v-if="offerDetail">
+      <div class="detail">
+        <div class="name">{{seller.name}}</div>
+        <star :number="seller.score" :type="3"></star>
+      </div>
+      <div class="close">
+        <i @click="hideOfferDetail" class="icon icon-close"></i>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import Star from 'components/star/star.vue'
 
 export default {
   data(){
     return {
-      offerDetail:false
+      offerDetail: false
     }
   },
-  props:{
-    seller:{
-      type:Object
+  props: {
+    seller: {
+      type: Object
     }
   },
-  methods:{
-    showOfferDetail(){
+  methods: {
+    showOfferDetail() {
       this.offerDetail = true
     },
-    hideOfferDetail(){
+    hideOfferDetail() {
       this.offerDetail = false
     }
+  },
+  components: {
+    Star
   }
 }
 </script>
@@ -192,4 +204,26 @@ export default {
     bottom 0
     background rgba(7,17,27,0.6)
     z-index 99
+    overflow auto
+    .detail
+      width 100%
+      height 100%
+      box-sizing border-box
+      padding 130px 72px 140px 72px
+      overflow auto
+      .name
+        font-size 32px
+        line-hegiht 32px
+        text-align center
+        font-weight bold
+        margin-bottom 36px
+      .star-wrap
+        justify-content center
+    .close
+      position relative
+      z-index 3
+      margin-top -116px
+      text-align center
+      .icon
+        extend-click()
 </style>
