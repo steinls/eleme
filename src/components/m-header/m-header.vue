@@ -47,15 +47,45 @@
       </div>
     </div>
 
-    <div class="sheet" v-if="offerDetail">
-      <div class="detail">
-        <div class="name">{{seller.name}}</div>
-        <star :number="seller.score" :type="3"></star>
+    <transition name="fade">
+      <div class="sheet" v-if="offerDetail">
+        <div class="detail">
+          <div class="name">{{seller.name}}</div>
+
+          <star :number="seller.score" :type="3"></star>
+
+          <div class="supprts-wrap" v-if="seller.supports">
+            <div class="title-wrap">
+              <div class="title">
+                优惠信息
+              </div>
+            </div>
+
+            <ul class="supprts" >
+              <li class="supprts-item" v-for="(item,key) in seller.supports" :key="key">
+                <span class="brand" :class="supprts[item.type]"></span>
+                <div class="text">{{item.description}}</div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="seller">
+            <div class="title-wrap">
+              <div class="title">
+                商家公告
+              </div>
+            </div>
+
+            <div class="seller-bulletin">
+              {{seller.bulletin}}
+            </div>
+          </div>
+        </div>
+        <div class="close">
+          <i @click="hideOfferDetail" class="icon icon-close"></i>
+        </div>
       </div>
-      <div class="close">
-        <i @click="hideOfferDetail" class="icon icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -64,7 +94,14 @@ import Star from 'components/star/star.vue'
 export default {
   data(){
     return {
-      offerDetail: false
+      offerDetail: true,
+      supprts: [
+        'decrease',
+        'discount',
+        'special',
+        'invoice',
+        'guarantee'
+      ]
     }
   },
   props: {
@@ -87,6 +124,12 @@ export default {
 </script>
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 .header
   font-family '微软雅黑'
   position relative
@@ -219,6 +262,60 @@ export default {
         margin-bottom 36px
       .star-wrap
         justify-content center
+        margin-bottom 62px
+      .title-wrap
+          display flex
+          align-items center
+          height 30px
+          font-size 30px
+          font-weight bold
+          margin-bottom 47px
+          &:before
+            flex 1
+            content ''
+            height 2px
+            background #61676d
+          &:after
+            flex 1
+            content ''
+            height 2px
+            background #61676d
+          .title
+            padding 0 24px
+      .supprts-wrap
+        margin-bottom 56px
+        .supprts
+          padding-left 26px
+          .supprts-item
+            display flex
+            align-items center
+            height 32px
+            font-size 24px
+            margin-bottom 24px
+            &:last-child
+              margin-bottom 0
+            .brand
+              width 32px
+              height 32px
+              border-radius 3px
+              margin-right 12px
+              background-repeat no-repeat
+              background-size 100% 100%
+              &.decrease
+                bg-image('decrease_1')
+              &.discount
+                bg-image('discount_1')
+              &.special
+                bg-image('special_1')
+              &.invoice
+                bg-image('invoice_1')
+              &.guarantee
+                bg-image('guarantee_1')
+      .seller
+        .seller-bulletin
+          font-size 24px
+          line-height 52px
+          padding 0 26px
     .close
       position relative
       z-index 3

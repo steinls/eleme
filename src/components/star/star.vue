@@ -1,13 +1,13 @@
 <template>
   <div class="star-wrap" :class="classType">
-    <span class="star" v-for="classItem in classArr" :class="classItem"></span>
+    <span class="star" v-for="(classItem,key) in classArr" :key="key" :class="classItem"></span>
   </div>
 </template>
 <script>
 const max = 5
-const star_on = 'star-on'
-const star_half = 'star-half'
-const star_off = 'star-off'
+const starOn = 'star-on'
+const starHalf = 'star-half'
+const starOff = 'star-off'
 
 export default {
   props: {
@@ -34,11 +34,11 @@ export default {
       var arr = []
       for (var i = 0; i < max; i++){
         if (i < core) {
-          arr.push(star_on)
+          arr.push(starOn)
         } else if (i === (core + 1) && isHalf){
-          arr.push(star_half)
+          arr.push(starHalf)
         } else {
-          arr.push(star_off)
+          arr.push(starOff)
         }
       }
       return arr
