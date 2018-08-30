@@ -94,7 +94,7 @@ import Star from 'components/star/star.vue'
 export default {
   data(){
     return {
-      offerDetail: true,
+      offerDetail: false,
       supprts: [
         'decrease',
         'discount',
@@ -130,6 +130,7 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+.filter-blur
 .header
   font-family '微软雅黑'
   position relative
@@ -250,10 +251,10 @@ export default {
     overflow auto
     .detail
       width 100%
-      height 100%
+      min-height 100%
       box-sizing border-box
       padding 130px 72px 140px 72px
-      overflow auto
+      backdrop-filter blur(10px)
       .name
         font-size 32px
         line-hegiht 32px
