@@ -2,9 +2,9 @@
   <div class="goods">
     <div class="kinds-wrap">
       <ul class="kinds">
-        <li class="kinds-item" v-for="(item,key) in goods"  @click="selectKind(key)" :class="{active:select===key}">
+        <li class="kinds-item" v-for="(item,key) in goods" :key="key" @click="selectKind(key)" :class="{active:select===key}">
           <div class="cont">
-            <span></span>
+            <brand-map v-if="item.type!==-1" :type="item.type"></brand-map>
             <div class="text">
               {{item.name}}
             </div>
@@ -17,6 +17,7 @@
 </template>
 <script>
 import {ERR_OK} from 'api/config.js'
+import BrandMap from '../components/brand-map/brand-map.vue'
 
 export default {
   props: {
@@ -35,6 +36,7 @@ export default {
       let data = res.data
       if (data.errno === ERR_OK){
         this.goods = data.data
+        console.log('-----------')
         console.log(data.data)
       }
     })
@@ -43,6 +45,9 @@ export default {
     selectKind(key){
       this.select = key
     }
+  },
+  components: {
+    BrandMap
   }
 }
 </script>
@@ -61,7 +66,6 @@ export default {
     width 161px
     height 100%
     background #f3f5f7
-    font-size 22px
     box-sizing border-box
     overflow auto
     .kinds-item
@@ -69,8 +73,7 @@ export default {
       align-items center
       height 108px
       color #07111b
-      padding-left 23px
-      padding-right 43px
+      padding 0 23px
       border-1px-t(#dbdee1)
       &:after
         width 112px
@@ -84,6 +87,16 @@ export default {
           display none
       &.active+.kinds-item:after
         display none
+      .cont
+        overflow hidden
+        .brand-map
+          float left
+          position relative
+          top 3px
+          margin-right 4px
+        .text
+          font-size 22px
+          line-height 28px
   .dishes
     flex 1
 </style>

@@ -25,7 +25,7 @@
             </div>
 
             <div class="offer" v-if="seller.supports">
-              <span class="icon"></span>
+              <brand-map></brand-map>
               <div class="text">
                 {{seller.supports[0].description}}
               </div>
@@ -63,7 +63,7 @@
 
             <ul class="supprts" >
               <li class="supprts-item" v-for="(item,key) in seller.supports" :key="key">
-                <span class="brand" :class="supprts[item.type]"></span>
+                <brand-map :type="item.type" :size="1"></brand-map>
                 <div class="text">{{item.description}}</div>
               </li>
             </ul>
@@ -90,6 +90,7 @@
 </template>
 <script>
 import Star from 'components/star/star.vue'
+import BrandMap from 'components/brand-map/brand-map.vue'
 
 export default {
   data(){
@@ -118,7 +119,8 @@ export default {
     }
   },
   components: {
-    Star
+    Star,
+    BrandMap
   }
 }
 </script>
@@ -203,14 +205,8 @@ export default {
           .offer
             display flex
             font-size 20px
-            .icon
-              width 24px
-              height 24px
-              bg-image('decrease_1')
-              background-size 100% 100%
-              background-repeat no-repeat
+            .brand-map
               margin-right 9px
-              border-radius 3px
         .offer-count
           position absolute
           right 0
@@ -295,23 +291,8 @@ export default {
             margin-bottom 24px
             &:last-child
               margin-bottom 0
-            .brand
-              width 32px
-              height 32px
-              border-radius 3px
+            .brand-map
               margin-right 12px
-              background-repeat no-repeat
-              background-size 100% 100%
-              &.decrease
-                bg-image('decrease_1')
-              &.discount
-                bg-image('discount_1')
-              &.special
-                bg-image('special_1')
-              &.invoice
-                bg-image('invoice_1')
-              &.guarantee
-                bg-image('guarantee_1')
       .seller
         .seller-bulletin
           font-size 24px
