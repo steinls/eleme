@@ -4,8 +4,8 @@
       <ul class="kinds">
         <li class="kinds-item" v-for="(item,key) in goods" :key="key" @click="selectKind(key)" :class="{active:select===key}">
           <div class="cont">
-            <brand-map v-if="item.type!==-1" :type="item.type"></brand-map>
             <div class="text">
+              <brand-map v-if="item.type!==-1" :type="item.type"></brand-map>
               {{item.name}}
             </div>
           </div>
@@ -68,10 +68,12 @@ export default {
     background #f3f5f7
     box-sizing border-box
     overflow auto
+    font-size 22px
+    line-height 32px
     .kinds-item
       display flex
       align-items center
-      height 108px
+      height 109px
       color #07111b
       padding 0 23px
       border-1px-t(#dbdee1)
@@ -88,15 +90,10 @@ export default {
       &.active+.kinds-item:after
         display none
       .cont
-        overflow hidden
         .brand-map
-          float left
+          display inline-block
           position relative
-          top 3px
-          margin-right 4px
-        .text
-          font-size 22px
-          line-height 28px
+          top 4px
   .dishes
     flex 1
 </style>
