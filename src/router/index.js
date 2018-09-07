@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-let seller = () => import('../viewports/seller.vue')
-let goods = () => import('../viewports/goods.vue')
-let ratings = () => import('../viewports/ratings.vue')
+let seller = () => import('../viewports/seller/seller.vue')
+let goods = () => import('../viewports/goods/goods.vue')
+let ratings = () => import('../viewports/ratings/ratings.vue')
 
 Vue.use(Router)
 

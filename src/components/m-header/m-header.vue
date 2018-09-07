@@ -149,7 +149,10 @@ export default {
     overflow hidden
     z-index 0
     img
-      flex 1
+      height 132%
+      width 100%
+      bottom 0
+      position absolute
       filter blur(10px)
     &:after
       content ''

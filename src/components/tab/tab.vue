@@ -25,7 +25,7 @@ export default {
   display:flex
   width:100%
   height:80px
-  border-1px(#e5e5e5)
+  border-bottom 2px solid #e5e5e5
   color:#4d555d
   font-size:28px
   .tab-item

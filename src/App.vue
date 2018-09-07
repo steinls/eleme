@@ -24,8 +24,9 @@ export default {
       let data = response.body
       if (data.errno === ERR_OK) {
         this.seller = data.data
+        console.log('seller-data---')
+        console.log(this.seller)
       }
-      console.log(this.seller)
     })
   },
   components: {
