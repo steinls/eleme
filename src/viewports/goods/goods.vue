@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <div class="kinds-wrap">
+    <b-scroll class="kinds-wrap" :data="goods">
       <ul class="kinds">
         <li class="kinds-item" v-for="(item,key) in goods" :key="key" @click="selectKind(key)" :class="{active:select===key}">
           <div class="cont">
@@ -11,8 +11,8 @@
           </div>
         </li>
       </ul>
-    </div>
-    <div class="dishe-kinds">
+    </b-scroll>
+    <b-scroll class="dishe-kinds" :data="goods">
       <div class="dishes" v-for="(kind,key) in goods" :key="key">
 
         <h3 class="dishes-title">{{kind.name}}</h3>
@@ -33,21 +33,22 @@
                 <span class="price"><i>￥</i>{{dishe.price}}</span>
                 <span class="old-price" v-if="dishe.price !== dishe.price">￥{{dishe.price}}</span>
             </div>
-            <div class="count">
+<!--             <div class="count">
               <div class="less">-</div>
               <div class="num">0</div>
               <div class="add">+</div>
-            </div>
+            </div> -->
           </div>
         </div>
 
       </div>
-    </div>
+    </b-scroll>
   </div>
 </template>
 <script>
 import {ERR_OK} from 'api/config.js'
 import BrandMap from 'components/brand-map/brand-map.vue'
+import BScroll from 'base/b-scroll/b-scroll.vue'
 
 export default {
   props: {
@@ -77,7 +78,8 @@ export default {
     }
   },
   components: {
-    BrandMap
+    BrandMap,
+    BScroll
   }
 }
 </script>
@@ -91,38 +93,41 @@ export default {
   bottom 97px
   left 0
   right 0
-  .kinds
-    width 161px
+  .kinds-wrap
     height 100%
-    background #f3f5f7
-    box-sizing border-box
+    width 161px
     overflow auto
-    font-size 22px
-    line-height 32px
-    .kinds-item
-      display flex
-      align-items center
-      height 109px
-      color #07111b
-      padding 0 23px
-      border-1px-t(#dbdee1)
-      &:after
-        width 112px
-        left 50%
-        margin-left -56px
-      &:first-child:after
-        display none
-      &.active
-        background #ffffff
+    .kinds
+      background #f3f5f7
+      box-sizing border-box
+      overflow auto
+      font-size 22px
+      line-height 32px
+      .kinds-item
+        display flex
+        align-items center
+        height 109px
+        color #07111b
+        padding 0 23px
+        border-1px-t(#dbdee1)
         &:after
+          width 112px
+          left 50%
+          margin-left -56px
+        &:first-child:after
           display none
-      &.active+.kinds-item:after
-        display none
-      .cont
-        .brand-map
-          display inline-block
-          position relative
-          top 4px
+        &.active
+          background #ffffff
+          &:after
+            display none
+        &.active+.kinds-item:after
+          display none
+        .cont
+          .brand-map
+            display inline-block
+            position relative
+            top 4px
+
   .dishe-kinds
     overflow-y auto
     flex 1

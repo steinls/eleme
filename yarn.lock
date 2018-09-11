@@ -957,9 +957,9 @@ batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
 
-better-scroll@^1.12.4:
-  version "1.12.4"
-  resolved "https://registry.yarnpkg.com/better-scroll/-/better-scroll-1.12.4.tgz#27d722fe7b6844176feb136da4f2fd39c70f973e"
+better-scroll@^1.12.6:
+  version "1.12.6"
+  resolved "http://r.cnpmjs.org/better-scroll/download/better-scroll-1.12.6.tgz#7548860f8b8c08c87e5af062e1da6e2c68c98337"
   dependencies:
     babel-runtime "^6.0.0"
 

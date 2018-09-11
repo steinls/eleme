@@ -20,7 +20,7 @@ Vue.use(vueRource)
 // 会引起警告
 // Violation]为滚动阻止<some>事件添加了非被动事件侦听器。
 import VConsole from 'vconsole'
-new VConsole()
+var x = new VConsole()
 
 new Vue({
   el: '#app',
