@@ -1,5 +1,6 @@
 <template>
   <div class="goods">
+    <!-- 菜单 -->
     <b-scroll class="kinds-wrap" :data="goods">
       <ul class="kinds">
         <li class="kinds-item" v-for="(item,key) in goods" :key="key" @click="selectKind(key)" :class="{active:select===key}">
@@ -12,11 +13,13 @@
         </li>
       </ul>
     </b-scroll>
-    <b-scroll class="dishe-kinds" :data="goods">
-      <div class="dishes" v-for="(kind,key) in goods" :key="key">
 
+    <!-- 菜品种类 -->
+    <b-scroll class="dishe-kinds" ref="dishes" :data="goods" :listenScroll="true" @scroll="scroll">
+      <div class="dishes" ref="kindItem" v-for="(kind,key) in goods" :key="key">
+        <!-- 种类标题 -->
         <h3 class="dishes-title">{{kind.name}}</h3>
-
+        <!-- 某种类菜品列表 -->
         <div class="dishes-item" v-for="(dishe,key) in kind.foods" :key="key">
           <div class="img">
             <img :src="dishe.image" alt="">
@@ -33,11 +36,6 @@
                 <span class="price"><i>￥</i>{{dishe.price}}</span>
                 <span class="old-price" v-if="dishe.price !== dishe.price">￥{{dishe.price}}</span>
             </div>
-<!--             <div class="count">
-              <div class="less">-</div>
-              <div class="num">0</div>
-              <div class="add">+</div>
-            </div> -->
           </div>
         </div>
 
@@ -63,11 +61,12 @@ export default {
     }
   },
   created() {
+    this.heightGroup = []
+
     this.$http.get('api/goods').then((res) => {
       let data = res.data
       if (data.errno === ERR_OK){
         this.goods = data.data
-        console.log('goods-data---')
         console.log(data.data)
       }
     })
@@ -75,11 +74,32 @@ export default {
   methods: {
     selectKind(key){
       this.select = key
+
+      this.$refs.dishes.scrollTo(0, -this.heightGroup[key])
+    },
+    scroll(pos){
+      var scrollH = pos.y
+      this.heightGroup.forEach((v, k) => {
+        if (scrollH < -v) {
+          this.select = k
+        }
+      })
     }
   },
   components: {
     BrandMap,
     BScroll
+  },
+  watch: {
+    goods() {
+      this.$nextTick(() => {
+        let height = 0
+        this.$refs.kindItem.forEach((v) => {
+          this.heightGroup.push(height)
+          height += v.clientHeight
+        })
+      })
+    }
   }
 }
 </script>
