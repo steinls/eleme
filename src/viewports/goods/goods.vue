@@ -15,7 +15,7 @@
     </b-scroll>
 
     <!-- 菜品种类 -->
-    <b-scroll class="dishe-kinds" ref="dishes" :data="goods" :listenScroll="true" @scroll="scroll">
+    <b-scroll class="dishe-kinds" ref="disheKinds" :data="goods" :listenScroll="true" @scroll="scroll" :listenScrollEnd="true" @scrollEnd="scrollEnd">
       <div class="dishes" ref="kindItem" v-for="(kind,key) in goods" :key="key">
         <!-- 种类标题 -->
         <h3 class="dishes-title">{{kind.name}}</h3>
@@ -61,6 +61,7 @@ export default {
     }
   },
   created() {
+    this.lock = true
     this.heightGroup = []
 
     this.$http.get('api/goods').then((res) => {
@@ -74,16 +75,24 @@ export default {
   methods: {
     selectKind(key){
       this.select = key
-
-      this.$refs.dishes.scrollTo(0, -this.heightGroup[key])
+      this.lock = true
+      this.$refs.disheKinds.scrollToElement(this.heightGroup[key].el, 300)
     },
     scroll(pos){
+      if (this.lock) {
+        return
+      }
+
       var scrollH = pos.y
       this.heightGroup.forEach((v, k) => {
-        if (scrollH < -v) {
+        if (scrollH <= -v.limit) {
           this.select = k
         }
       })
+    },
+    scrollEnd() {
+      console.log(1111111)
+      this.lock = false
     }
   },
   components: {
@@ -93,10 +102,13 @@ export default {
   watch: {
     goods() {
       this.$nextTick(() => {
-        let height = 0
+        let limit = 0
         this.$refs.kindItem.forEach((v) => {
-          this.heightGroup.push(height)
-          height += v.clientHeight
+          this.heightGroup.push({
+            limit,
+            el: v
+          })
+          limit += v.clientHeight
         })
       })
     }

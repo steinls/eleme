@@ -41,6 +41,16 @@ export default {
       type: Boolean,
       default: false
     },
+    // 滚动开始
+    listenScrollStart: {
+      type: Boolean,
+      default: false
+    },
+    // 滚动结束
+    listenScrollEnd: {
+      type: Boolean,
+      default: false
+    },
     // 滚动到底部（一般用于上拉刷新）
     pullUp: {
       type: Boolean,
@@ -48,11 +58,6 @@ export default {
     },
     // 滚到到顶部（一般用于下拉刷新）
     pullDown: {
-      type: Boolean,
-      default: false
-    },
-    // 滚动开始
-    scrollStart: {
       type: Boolean,
       default: false
     }
@@ -63,7 +68,6 @@ export default {
   methods: {
     init() {
       if (!this.$refs.wrapper) {
-        console.log(1)
         return
       }
 
@@ -75,6 +79,18 @@ export default {
       if (this.listenScroll) {
         this.scroll.on('scroll', (pos) => {
           this.$emit('scroll', pos)
+        })
+      }
+
+      if (this.listenScrollStart) {
+        this.scroll.on('beforeScrollStart', (pos) => {
+          this.$emit('scrollStart', pos)
+        })
+      }
+
+      if (this.listenScrollEnd) {
+        this.scroll.on('scrollEnd', (pos) => {
+          this.$emit('scrollEnd', pos)
         })
       }
 
@@ -93,12 +109,6 @@ export default {
           }
         })
       }
-
-      if (this.scrollStart) {
-        this.scroll.on('beforeScrollStart', (pos) => {
-          this.$emit('scrollStart', pos)
-        })
-      }
     },
     refresh() {
       this.scroll && this.scroll.refresh()
@@ -110,10 +120,17 @@ export default {
       this.scroll && this.scroll.enable()
     },
     scrollTo(...args) {
+      // x,y,time,easing
       this.scroll && this.scroll.scrollTo(...args)
     },
     scrollToElement(...args) {
-      this.scroll && this.scroll.scrollToElemnt(...args)
+      // el,time,
+      // 是否滚动到元素的x/y轴中心：offsetX,offsetY,
+      // easing
+      this.scroll && this.scroll.scrollToElement(...args)
+    },
+    console() {
+      console.log('b-scroll 已启动')
     }
   },
   watch: {
