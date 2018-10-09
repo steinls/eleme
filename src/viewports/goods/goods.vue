@@ -75,7 +75,6 @@ export default {
       let data = res.data
       if (data.errno === ERR_OK){
         this.goods = data.data
-        console.log('---goods----')
         console.log(this.goods)
       }
     })

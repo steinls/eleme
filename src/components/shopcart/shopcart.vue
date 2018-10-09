@@ -1,13 +1,13 @@
 <template>
-  <div class="shopcart" :class="{active:isShip}">
-    <div class="chircle">
+  <div class="shopcart">
+    <div class="chircle" :class="{active:goods.length}">
       <div class="icon-wrap">
         <i class="icon icon-shopping_cart"></i>
-        <div class="label" v-if="isShip">{{goodsNum}}</div>
+        <div class="label">{{goodsNum}}</div>
       </div>
     </div>
     <div class="demand">
-      <div class="price">
+      <div class="price" :class="{active:isShip}">
         ￥{{total}}
       </div>
       <div class="line"></div>
@@ -15,7 +15,7 @@
         另需配送费￥{{surcharge}}元
       </div>
     </div>
-    <div class="endcount">{{endcountString}}</div>
+    <div class="endcount" :class="{active:isShip}">{{endcountString}}</div>
   </div>
 </template>
 
@@ -90,13 +90,6 @@ export default {
   height 96px
   width 100%
   background #131d26
-  &.active
-    .icon-wrap .icon,.endcount,.price
-      color #ffffff!important
-    .endcount
-      background #00b43c!important
-    .icon-wrap
-      background #00a0dc!important
   .chircle
     margin-top -20px
     margin-left 36px
@@ -106,6 +99,11 @@ export default {
     background #131d26
     padding 12px
     box-sizing border-box
+    &.active
+      .icon-wrap .icon
+        color #ffffff
+      .icon-wrap
+        background #00a0dc
     .icon-wrap
       position relative
       width 100%
@@ -136,6 +134,8 @@ export default {
     .price
       font-weight bold
       margin 0 24px
+      &.active
+        color #ffffff
     .line
       width 1px
       height 50px
@@ -154,4 +154,7 @@ export default {
     color #979a9c
     align-items center
     justify-content center
+    &.active
+      color #ffffff
+      background #00b43c
 </style>
