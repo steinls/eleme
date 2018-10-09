@@ -1,6 +1,8 @@
 <template>
   <div class="count-control">
-    <div v-if="foodNum>=1" @click="reduce" class="reduce icon-remove_circle_outline"></div>
+    <transition name="fade">
+      <div v-if="foodNum>=1" @click="reduce" class="reduce icon-remove_circle_outline"></div>
+    </transition>
     <div v-if="foodNum>=1" class="num">{{foodNum}}</div>
     <div @click="add" class="add icon-add_circle"></div>
   </div>
@@ -57,6 +59,12 @@ export default {
 </script>
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 .count-control
   display flex
   position absolute
@@ -66,6 +74,8 @@ export default {
     font-size 40px
     color #00a0dc
     extend-click()
+  .reduce
+    transform translate3d(0,0,0)
   .num
     display flex
     align-items center
