@@ -38,12 +38,13 @@
                   <span class="old-price" v-if="dishe.price !== dishe.price">￥{{dishe.price}}</span>
               </div>
             </div>
+            <count-control :select-foods="selectFoods" :food="dishe"></count-control>
           </div>
 
         </div>
       </b-scroll>
     </div>
-    <shopcart></shopcart>
+    <shopcart :goods="selectFoods" :min-price="seller.minPrice" :surcharge="seller.deliveryPrice"></shopcart>
   </div>
 </template>
 <script>
@@ -51,6 +52,7 @@ import {ERR_OK} from 'api/config.js'
 import BrandMap from 'components/brand-map/brand-map.vue'
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import Shopcart from 'components/shopcart/shopcart.vue'
+import CountControl from 'components/count-control/count-control.vue'
 
 export default {
   props: {
@@ -61,7 +63,8 @@ export default {
   data () {
     return {
       goods: [],
-      select: 0
+      select: 0,
+      selectFoods: []
     }
   },
   created() {
@@ -72,7 +75,8 @@ export default {
       let data = res.data
       if (data.errno === ERR_OK){
         this.goods = data.data
-        console.log(data.data)
+        console.log('---goods----')
+        console.log(this.goods)
       }
     })
   },
@@ -87,12 +91,14 @@ export default {
         return
       }
 
-      var scrollH = pos.y
+      let idx = 0
       this.heightGroup.forEach((v, k) => {
-        if (scrollH <= -v.limit) {
-          this.select = k
+        if (pos.y <= -v.limit) {
+          idx = k
         }
       })
+
+      this.select = idx
     },
     scrollEnd() {
       this.lock = false
@@ -101,7 +107,8 @@ export default {
   components: {
     BrandMap,
     BScroll,
-    Shopcart
+    Shopcart,
+    CountControl
   },
   watch: {
     goods() {
@@ -184,10 +191,10 @@ export default {
           background #f3f5f7
         .dishes-item
           display flex
-          padding 36px
+          padding 36px 40px 36px 36px
           border-1px-b(#d9dde1)
           &:after
-            width calc(100% - 72px)
+            width calc(100% - 76px)
             margin-left 36px
           &:last-child:after
             display none
@@ -211,11 +218,11 @@ export default {
               color #07111b
             .remark,.sales
               font-size 18px
-              line-height 18px
-              height 18px
+              line-height 24px
               color #93999f
               margin-top 16px
             .sales
+              line-height 18px
               display flex
               .sell
                 margin-right 24px

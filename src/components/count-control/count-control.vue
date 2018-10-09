@@ -1,0 +1,74 @@
+<template>
+  <div class="count-control">
+    <div v-if="foodNum>=1" @click="reduce" class="reduce icon-remove_circle_outline"></div>
+    <div v-if="foodNum>=1" class="num">{{foodNum}}</div>
+    <div @click="add" class="add icon-add_circle"></div>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    food: {
+      type: Object
+    },
+    selectFoods: {
+      type: Array
+    }
+  },
+  methods: {
+    add(){
+      let idx = this.inquire(this.food.name)
+      console.log(this.selectFoods)
+      if (idx === -1) {
+        this.selectFoods.push(Object.assign({num: 1}, this.food))
+      } else {
+        this.selectFoods[idx].num++
+      }
+    },
+    reduce(){
+      let idx = this.inquire(this.food.name)
+      if (idx !== -1) {
+        if (this.selectFoods[idx].num === 1) {
+          this.selectFoods.splice(idx, 1)
+        } else {
+          this.selectFoods[idx].num--
+        }
+      }
+    },
+    inquire(name){
+      for (let [k, v] of this.selectFoods.entries()) {
+        if (v.name === name) {
+          return k
+        }
+      }
+      return -1
+    }
+  },
+  computed: {
+    foodNum(){
+      let idx = this.inquire(this.food.name)
+      if (idx !== -1) {
+        return this.selectFoods[idx].num
+      }
+      return 0
+    }
+  }
+}
+</script>
+<style lang="stylus">
+@import '../../common/stylus/mixin.styl'
+.count-control
+  display flex
+  position absolute
+  bottom 40px
+  right 40px
+  .add,.reduce
+    font-size 40px
+    color #00a0dc
+    extend-click()
+  .num
+    display flex
+    align-items center
+    font-size 20px
+    padding 0 22px
+</style>

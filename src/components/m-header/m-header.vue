@@ -235,6 +235,8 @@ export default {
         margin-right 12px
       .text
         flex 1
+        font-size 20px
+        height 20px
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

@@ -2,7 +2,7 @@
   <div id="app">
     <m-header :seller="seller"></m-header>
     <tab></tab>
-    <router-view/>
+    <router-view :seller="seller"/>
   </div>
 </template>
 
