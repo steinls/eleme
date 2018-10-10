@@ -68,7 +68,7 @@ export default {
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
 .fade-enter-active, .fade-leave-active
-  transition opacity 2s
+  transition opacity 0.5s
 .fade-enter, .fade-leave-to
   opacity 0
 
@@ -76,7 +76,7 @@ export default {
   transition all 0.5s
 .slide-fade-enter, .slide-fade-leave-to
   opacity 0
-  transform translate3d(24px,0,0)
+  transform translate3d(24px,0,0) rotate(180deg)
 
 .count-control
   display flex
