@@ -3,20 +3,22 @@
     <transition name="fade">
       <div class="sheet" v-if="isList" @click="hideList"></div>
     </transition>
-    <div class="list" v-if="isList">
-      <div class="title">
-        <div>购物车</div>
-        <div class="btn" @click="clear">清空</div>
+    <transition name="yanshen">
+      <div class="list" v-if="isList">
+        <div class="title">
+          <div>购物车</div>
+          <div class="btn" @click="clear">清空</div>
+        </div>
+        <b-scroll class="cont" :data="goods" ref="list">
+          <ul>
+            <li v-for="(item, key) in goods" :key="key">
+              <div>{{item.name}}</div>
+              <count-control @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
+            </li>
+          </ul>
+        </b-scroll>
       </div>
-      <b-scroll class="cont" :data="goods" ref="list">
-        <ul>
-          <li v-for="(item, key) in goods" :key="key">
-            <div>{{item.name}}</div>
-            <count-control :selectFoods="goods" :food="item"></count-control>
-          </li>
-        </ul>
-      </b-scroll>
-    </div>
+    </transition>
     <div class="panel">
       <div class="left" @click="showList">
         <div class="chircle" :class="{active:goods.length}">
@@ -47,7 +49,7 @@ import CountControl from 'components/count-control/count-control.vue'
 export default {
   data(){
     return {
-      isList: true
+      isList: false
     }
   },
   props: {
@@ -97,6 +99,11 @@ export default {
     },
     hideList(){
       this.isList = false
+    },
+    reduce(){
+      if (!this.goods.length) {
+        this.isList = false
+      }
     }
   },
   computed: {
@@ -135,12 +142,15 @@ export default {
 
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
+.fade-enter-active, .fade-leave-active
+  transition opacity .5s
+.fade-enter, .fade-leave-to
+  opacity 0
+
+.yanshen-enter-active, .yanshen-leave-active
+  transition all 0.62s
+.yanshen-enter, .yanshen-leave-to
+  transform translate3d(0,515px,0)
 
 .shopcart
   position absolute

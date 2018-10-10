@@ -1,9 +1,13 @@
 <template>
   <div class="count-control">
-    <transition name="fade">
-      <div v-if="foodNum>=1" @click="reduce" class="reduce icon-remove_circle_outline"></div>
+    <transition name="slide-fade">
+      <div v-if="foodNum>0" @click="reduce" class="reduce icon-remove_circle_outline"></div>
     </transition>
-    <div v-if="foodNum>=1" class="num">{{foodNum}}</div>
+
+    <transition name="fade">
+      <div v-if="foodNum>0" class="num">{{foodNum}}</div>
+    </transition>
+
     <div @click="add" class="add icon-add_circle"></div>
   </div>
 </template>
@@ -26,6 +30,8 @@ export default {
       } else {
         this.selectFoods[idx].num++
       }
+
+      this.$emit('add')
     },
     reduce(){
       let idx = this.inquire(this.food.name)
@@ -36,6 +42,8 @@ export default {
           this.selectFoods[idx].num--
         }
       }
+
+      this.$emit('reduce')
     },
     inquire(name){
       for (let [k, v] of this.selectFoods.entries()) {
@@ -59,12 +67,17 @@ export default {
 </script>
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
+.fade-enter-active, .fade-leave-active
+  transition opacity 2s
+.fade-enter, .fade-leave-to
+  opacity 0
+
+.slide-fade-enter-active, .slide-fade-leave-active
+  transition all 0.5s
+.slide-fade-enter, .slide-fade-leave-to
+  opacity 0
+  transform translate3d(24px,0,0)
+
 .count-control
   display flex
   position absolute
@@ -74,11 +87,10 @@ export default {
     font-size 40px
     color #00a0dc
     extend-click()
-  .reduce
-    transform translate3d(0,0,0)
   .num
     display flex
     align-items center
+    transform translate3d(0,0,0)
     font-size 20px
     padding 0 22px
 </style>
