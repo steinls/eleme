@@ -11,10 +11,12 @@
         </div>
         <b-scroll class="cont" :data="goods" ref="list">
           <ul>
-            <li v-for="(item, key) in goods" :key="key">
-              <div>{{item.name}}</div>
-              <count-control @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
-            </li>
+            <transition-group name="small-fade" tag="div">
+              <li v-for="item in goods" :key="item.name">
+                <div>{{item.name}}</div>
+                <count-control @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
+              </li>
+            </transition-group>
           </ul>
         </b-scroll>
       </div>
@@ -147,9 +149,23 @@ export default {
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
 .fade-enter-active, .fade-leave-active
-  transition opacity .5s
+  transition opacity 0.5s
 .fade-enter, .fade-leave-to
   opacity 0
+
+.small-fade-leave-active
+  animation: fadeOutDown 0.5s;
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    margin-top: -97px;
+    transform: scaleY(0);
+  }
+}
 
 .yanshen-enter-active, .yanshen-leave-active
   transition all 0.62s
@@ -196,6 +212,7 @@ export default {
       padding 0 36px
       overflow hidden
       li
+        transform-origin bottom
         display flex
         height 97px
         align-items center
