@@ -4,7 +4,7 @@
       <div class="sheet" v-if="isList" @click="hideList"></div>
     </transition>
     <transition name="yanshen">
-      <div class="list" v-if="isList" :style="{height:listHeight+'px'}">
+      <div class="list" v-if="isList" :style="{height:listHeight}">
         <div class="title">
           <div>购物车</div>
           <div class="btn" @click="clear">清空</div>
@@ -12,7 +12,7 @@
         <b-scroll class="cont" :data="goods" ref="list">
           <ul>
             <transition-group name="small-fade" tag="div">
-              <li v-for="item in goods" :key="item.name">
+              <li ref="listItem" v-for="item in goods" :key="item.name">
                 <div>{{item.name}}</div>
                 <count-control @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
               </li>
@@ -130,8 +130,18 @@ export default {
       return this.isShip ? `结算` : `￥${this.minPrice}起送`
     },
     listHeight(){
-      let num = this.goods.length > 4 ? 4 : this.goods.length
-      return num * 97 + 80
+      if (this.goods.length < 4 && this.isList) {
+        let totalHeight = 0;
+        this.$nextTick(() => {
+          this.$refs.listItem.forEach((el) => {
+            totalHeight += el.clientHeight
+          })
+
+          return totalHeight + 'px'
+        })
+      }
+
+      return 'auto'
     }
   },
   components: {
