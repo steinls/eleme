@@ -128,8 +128,8 @@ export default {
       return this.isShip ? `结算` : `￥${this.minPrice}起送`
     },
     listHeight(){
-      let num = this.goods.length>4?4:this.goods.length
-      return num*97+80
+      let num = this.goods.length > 4 ? 4 : this.goods.length
+      return num * 97 + 80
     }
   },
   components: {
