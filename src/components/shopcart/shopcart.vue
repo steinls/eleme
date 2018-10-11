@@ -4,7 +4,7 @@
       <div class="sheet" v-if="isList" @click="hideList"></div>
     </transition>
     <transition name="yanshen">
-      <div class="list" v-if="isList">
+      <div class="list" v-if="isList" :style="{height:listHeight+'px'}">
         <div class="title">
           <div>购物车</div>
           <div class="btn" @click="clear">清空</div>
@@ -126,6 +126,10 @@ export default {
     },
     endcountString(){
       return this.isShip ? `结算` : `￥${this.minPrice}起送`
+    },
+    listHeight(){
+      let num = this.goods.length>4?4:this.goods.length
+      return num*97+80
     }
   },
   components: {
@@ -172,6 +176,7 @@ export default {
     position absolute
     bottom 0
     left 0
+    transition all 0.5s
     .title
       display flex
       justify-content space-between
