@@ -102,7 +102,7 @@ export default {
     hideList(){
       this.isList = false
     },
-    reduce(){
+    reduce(idx){
       if (!this.goods.length) {
         this.isList = false
       }
@@ -151,6 +151,14 @@ export default {
   watch: {
     goods(newV){
       this.$refs.list && this.$refs.list.refresh()
+
+      if(this.$refs.list){
+        let scroll = this.$refs.list.scroll
+        if(this.goods.length > 3 && this.goods.length >= (this.goods.length - 4)){
+          let sh = scroll.y + 97
+          scroll.scrollTo(0, sh, 500)
+        }
+      }
     }
   }
 }
@@ -196,6 +204,7 @@ export default {
     background rgba(0,0,0,0.5)
     backdrop-filter blur(10px)
   .list
+    height 471px
     width 100%
     padding-bottom 140px
     background #ffffff
@@ -218,17 +227,20 @@ export default {
         color #3eade0
         font-size 22px
     .cont
-      max-height 392px
+      max-height 390px
       padding 0 36px
       overflow hidden
-      li
-        transform-origin bottom
-        display flex
-        height 97px
-        align-items center
-        border-1px-b(#e6e7e8)
-        color #07111b
-        font-size 28px
+      ul
+        padding-bottom 20px
+        li
+          transform-origin bottom
+          display flex
+          height 97px
+          align-items center
+          justify-content space-between
+          border-1px-b(#e6e7e8)
+          color #07111b
+          font-size 28px
   .panel
     display flex
     position relative

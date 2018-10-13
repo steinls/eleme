@@ -242,5 +242,8 @@ export default {
               position absolute
               bottom 36px
               right 40px
-
+          .count-control
+            position absolute
+            bottom 40px
+            right 40px
 </style>

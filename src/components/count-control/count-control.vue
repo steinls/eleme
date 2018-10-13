@@ -43,7 +43,7 @@ export default {
         }
       }
 
-      this.$emit('reduce')
+      this.$emit('reduce', idx)
     },
     inquire(name){
       for (let [k, v] of this.selectFoods.entries()) {
@@ -79,10 +79,8 @@ export default {
   transform translate3d(24px,0,0) rotate(180deg)
 
 .count-control
+  height 42px
   display flex
-  position absolute
-  bottom 40px
-  right 40px
   .add,.reduce
     font-size 40px
     color #00a0dc
