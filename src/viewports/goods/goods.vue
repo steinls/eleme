@@ -16,7 +16,14 @@
       </b-scroll>
 
       <!-- 菜品种类 -->
-      <b-scroll class="dishe-kinds" ref="disheKinds" :data="goods" :listenScroll="true" @scroll="scroll" :listenScrollEnd="true" @scrollEnd="scrollEnd">
+      <b-scroll class="dishe-kinds"
+        ref="disheKinds"
+        :data="goods"
+        :listenScroll="true"
+        @scroll="scroll"
+        :listenScrollEnd="true"
+        @scrollEnd="scrollEnd"
+      >
         <div class="dishes" ref="kindItem" v-for="(kind,key) in goods" :key="key">
           <!-- 种类标题 -->
           <h3 class="dishes-title">{{kind.name}}</h3>

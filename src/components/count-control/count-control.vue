@@ -35,15 +35,20 @@ export default {
     },
     reduce(){
       let idx = this.inquire(this.food.name)
+      let isRemove = false
       if (idx !== -1) {
         if (this.selectFoods[idx].num === 1) {
           this.selectFoods.splice(idx, 1)
         } else {
           this.selectFoods[idx].num--
+          isRemove = true
         }
       }
 
-      this.$emit('reduce', idx)
+      this.$emit('reduce', {
+        idx,
+        isRemove
+      })
     },
     inquire(name){
       for (let [k, v] of this.selectFoods.entries()) {

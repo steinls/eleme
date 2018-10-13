@@ -4,12 +4,17 @@
       <div class="sheet" v-if="isList" @click="hideList"></div>
     </transition>
     <transition name="yanshen">
-      <div class="list" v-if="isList" :style="{height:listHeight}">
+      <div class="shopcont" v-if="isList" :style="{height:listHeight}">
         <div class="title">
           <div>购物车</div>
           <div class="btn" @click="clear">清空</div>
         </div>
-        <b-scroll class="cont" :data="goods" ref="list">
+        <b-scroll class="list"
+          :data="goods"
+          ref="list"
+          :listenScrollEnd="true"
+          @scrollEnd="goodScrollEnd"
+        >
           <ul>
             <transition-group name="small-fade" tag="div">
               <li ref="listItem" v-for="item in goods" :key="item.name">
@@ -102,9 +107,26 @@ export default {
     hideList(){
       this.isList = false
     },
-    reduce(idx){
+    reduce(item){
       if (!this.goods.length) {
         this.isList = false
+      }
+
+      if (item.isRemove) {
+        this.easing(this.$refs.listItem[item.idx].clientHeight)
+      }
+    },
+    goodScrollEnd(){
+      this.$refs.list.refresh()
+    },
+    easing(height){
+      console.log(height)
+      if (this.$refs.list) {
+        let scroll = this.$refs.list.scroll
+        if (this.goods.length > 3 && this.goods.length >= (this.goods.length - 4)) {
+          let sh = scroll.maxScrollY + height
+          scroll.scrollTo(0, sh, 650)
+        }
       }
     }
   },
@@ -131,7 +153,7 @@ export default {
     },
     listHeight(){
       if (this.goods.length < 4 && this.isList) {
-        let totalHeight = 0;
+        let totalHeight = 0
         this.$nextTick(() => {
           this.$refs.listItem.forEach((el) => {
             totalHeight += el.clientHeight
@@ -150,15 +172,13 @@ export default {
   },
   watch: {
     goods(newV){
-      this.$refs.list && this.$refs.list.refresh()
-
-      if(this.$refs.list){
-        let scroll = this.$refs.list.scroll
-        if(this.goods.length > 3 && this.goods.length >= (this.goods.length - 4)){
-          let sh = scroll.y + 97
-          scroll.scrollTo(0, sh, 500)
-        }
-      }
+      // if (this.$refs.list) {
+      //   let scroll = this.$refs.list.scroll
+      //   if (this.goods.length > 3 && this.goods.length >= (this.goods.length - 4)) {
+      //     let sh = scroll.maxScrollY + 97
+      //     scroll.scrollTo(0, sh, 650)
+      //   }
+      // }
     }
   }
 }
@@ -203,7 +223,7 @@ export default {
     right 0
     background rgba(0,0,0,0.5)
     backdrop-filter blur(10px)
-  .list
+  .shopcont
     height 471px
     width 100%
     padding-bottom 140px
@@ -226,7 +246,7 @@ export default {
       .btn
         color #3eade0
         font-size 22px
-    .cont
+    .list
       max-height 390px
       padding 0 36px
       overflow hidden
