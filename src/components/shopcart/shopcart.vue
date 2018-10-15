@@ -112,7 +112,12 @@ export default {
         this.isList = false
       }
 
-      if (item.isRemove) {
+      // 当执行移除物品操作
+      // 并且
+      // 物品大于4个
+      // 并且
+      // 坐标是最后4个时
+      if (!item.isRemove && item.idx > (this.goods.length - 4) && item.idx > 3) {
         this.easing(this.$refs.listItem[item.idx].clientHeight)
       }
     },
@@ -120,10 +125,11 @@ export default {
       this.$refs.list.refresh()
     },
     easing(height){
-      console.log(height)
       if (this.$refs.list) {
         let scroll = this.$refs.list.scroll
-        if (this.goods.length > 3 && this.goods.length >= (this.goods.length - 4)) {
+        // 判断滚动条是否到底部
+        // 再执行对应操作消除抖动
+        if (scroll.y <= (scroll.maxScrollY + 50)) {
           let sh = scroll.maxScrollY + height
           scroll.scrollTo(0, sh, 650)
         }
@@ -169,17 +175,6 @@ export default {
   components: {
     BScroll,
     CountControl
-  },
-  watch: {
-    goods(newV){
-      // if (this.$refs.list) {
-      //   let scroll = this.$refs.list.scroll
-      //   if (this.goods.length > 3 && this.goods.length >= (this.goods.length - 4)) {
-      //     let sh = scroll.maxScrollY + 97
-      //     scroll.scrollTo(0, sh, 650)
-      //   }
-      // }
-    }
   }
 }
 </script>
