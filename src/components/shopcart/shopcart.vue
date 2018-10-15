@@ -1,5 +1,6 @@
 <template>
   <div class="shopcart">
+    <!-- 购物车详情 -->
     <transition name="fade">
       <div class="sheet" v-if="isList" @click="hideList"></div>
     </transition>
@@ -26,6 +27,8 @@
         </b-scroll>
       </div>
     </transition>
+
+    <!-- 购物车面板 -->
     <div class="panel">
       <div class="left" @click="showList">
         <div class="chircle" :class="{active:goods.length}">
@@ -114,10 +117,8 @@ export default {
 
       // 当执行移除物品操作
       // 并且
-      // 物品大于4个
-      // 并且
       // 坐标是最后4个时
-      if (!item.isRemove && item.idx > (this.goods.length - 4) && item.idx > 3) {
+      if (!item.isRemove && item.idx >= (this.goods.length - 4)) {
         this.easing(this.$refs.listItem[item.idx].clientHeight)
       }
     },

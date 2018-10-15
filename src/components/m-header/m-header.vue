@@ -38,6 +38,8 @@
           </div>
         </div>
       </div>
+
+      <!-- 公告 -->
       <div class="info" @click="showOfferDetail">
         <div class="bulletin"></div>
         <div class="text">
@@ -111,9 +113,11 @@ export default {
     }
   },
   methods: {
+    // 显示商家详情
     showOfferDetail() {
       this.offerDetail = true
     },
+    // 隐藏商家详情
     hideOfferDetail() {
       this.offerDetail = false
     }

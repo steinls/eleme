@@ -24,7 +24,6 @@ export default {
   methods: {
     add(){
       let idx = this.inquire(this.food.name)
-      console.log(this.selectFoods)
       if (idx === -1) {
         this.selectFoods.push(Object.assign({num: 1}, this.food))
       } else {

@@ -78,6 +78,7 @@ export default {
     this.lock = true
     this.heightGroup = []
 
+    // 获取数据
     this.$http.get('api/goods').then((res) => {
       let data = res.data
       if (data.errno === ERR_OK){
@@ -87,11 +88,18 @@ export default {
     })
   },
   methods: {
+    // 菜单选择
     selectKind(key){
       this.select = key
       this.lock = true
+
       this.$refs.disheKinds.scrollToElement(this.heightGroup[key].el, 300)
     },
+    scrollEnd() {
+      this.lock = false
+    },
+
+    // 物品对应的菜单某项高亮
     scroll(pos){
       if (this.lock) {
         return
@@ -105,9 +113,6 @@ export default {
       })
 
       this.select = idx
-    },
-    scrollEnd() {
-      this.lock = false
     }
   },
   components: {
@@ -118,6 +123,8 @@ export default {
   },
   watch: {
     goods() {
+      // 当数据初始化完毕，生成
+      // 菜单种类对应高度数组
       this.$nextTick(() => {
         let limit = 0
         this.$refs.kindItem.forEach((v) => {
