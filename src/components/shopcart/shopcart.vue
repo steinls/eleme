@@ -5,7 +5,7 @@
       <div class="sheet" v-if="isList" @click="hideList"></div>
     </transition>
     <transition name="yanshen">
-      <div class="shopcont" v-if="isList" :style="{height:listHeight}">
+      <div class="shopcont" v-if="isList">
         <div class="title">
           <div>购物车</div>
           <div class="btn" @click="clear">清空</div>
@@ -15,12 +15,13 @@
           ref="list"
           :listenScrollEnd="true"
           @scrollEnd="goodScrollEnd"
+          :style="{height:listHeight}"
         >
           <ul>
             <transition-group name="small-fade" tag="div">
               <li ref="listItem" v-for="item in goods" :key="item.name">
                 <div>{{item.name}}</div>
-                <count-control @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
+                <count-control @add="add" @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
               </li>
             </transition-group>
           </ul>
@@ -98,6 +99,7 @@ export default {
     console.log(this.goods)
   },
   methods: {
+    // 清空
     clear(){
       this.goods.splice(0, this.goods.length)
       this.hideList()
@@ -111,30 +113,34 @@ export default {
       this.isList = false
     },
     reduce(item){
+      // 如果没有商品，不显示详情
       if (!this.goods.length) {
         this.isList = false
       }
 
-      // 当执行移除物品操作
-      // 并且
-      // 坐标是最后4个时
-      if (!item.isRemove && item.idx >= (this.goods.length - 4)) {
-        this.easing(this.$refs.listItem[item.idx].clientHeight)
-      }
-    },
-    goodScrollEnd(){
-      this.$refs.list.refresh()
-    },
-    easing(height){
-      if (this.$refs.list) {
+      // 缓动操作
+      // 移除物品&&购物详情被打开&&末尾4件商品
+      let goodsNum = this.goods.length
+      if (this.isList && !item.isRemove && item.idx >= (goodsNum - 4)) {
         let scroll = this.$refs.list.scroll
-        // 判断滚动条是否到底部
-        // 再执行对应操作消除抖动
-        if (scroll.y <= (scroll.maxScrollY + 50)) {
+        // 滚动到底部&&商品高度溢出
+        if (scroll.y <= (scroll.maxScrollY + 50) && goodsNum > 3){
+          let height = this.$refs.listItem[item.idx].clientHeight
           let sh = scroll.maxScrollY + height
           scroll.scrollTo(0, sh, 650)
         }
       }
+    },
+    add(e){
+      // 执行加入购物车动画
+      console.log('执行加入购物车动画。。。')
+      console.log(e)
+    },
+    // 消除间隙
+    goodScrollEnd(){
+      this.$refs.list.refresh()
+    },
+    addShopcartAnimation(left, top){
     }
   },
   computed: {
@@ -159,23 +165,39 @@ export default {
       return this.isShip ? `结算` : `￥${this.minPrice}起送`
     },
     listHeight(){
-      if (this.goods.length < 4 && this.isList) {
-        let totalHeight = 0
-        this.$nextTick(() => {
-          this.$refs.listItem.forEach((el) => {
-            totalHeight += el.clientHeight
-          })
-
-          return totalHeight + 'px'
-        })
+      if (!this.isList) {
+        return
       }
 
-      return 'auto'
+      if (this.$refs.list) {
+        let list = this.$refs.list
+        let maxHeight = list.clientHeight
+
+        if (this.goods.length < 4 && this.isList) {
+          let totalHeight = 0
+          this.$nextTick(() => {
+            this.$refs.listItem.forEach((el) => {
+              totalHeight += el.clientHeight
+            })
+
+            return totalHeight + 'px'
+          })
+        }
+
+        return maxHeight + 'px'
+      } else {
+        return 'auto'
+      }
     }
   },
   components: {
     BScroll,
     CountControl
+  },
+  transitions: {
+    addShopcart(){
+
+    }
   }
 }
 </script>
@@ -220,7 +242,7 @@ export default {
     background rgba(0,0,0,0.5)
     backdrop-filter blur(10px)
   .shopcont
-    height 471px
+    max-height 471px
     width 100%
     padding-bottom 140px
     background #ffffff

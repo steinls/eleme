@@ -22,17 +22,23 @@ export default {
     }
   },
   methods: {
-    add(){
+    add(el){
       let idx = this.inquire(this.food.name)
+      let isAdd = false
       if (idx === -1) {
         this.selectFoods.push(Object.assign({num: 1}, this.food))
+        isAdd = true
       } else {
         this.selectFoods[idx].num++
       }
 
-      this.$emit('add')
+      this.$emit('add', {
+        idx,
+        isAdd,
+        el
+      })
     },
-    reduce(){
+    reduce(el){
       let idx = this.inquire(this.food.name)
       let isRemove = false
       if (idx !== -1) {
@@ -46,7 +52,8 @@ export default {
 
       this.$emit('reduce', {
         idx,
-        isRemove
+        isRemove,
+        el
       })
     },
     inquire(name){
