@@ -34,6 +34,17 @@
       <div class="left" @click="showList">
         <div class="chircle" :class="{active:goods.length}">
           <div class="icon-wrap">
+            <div class="case" ref="case">
+              <transition-group
+                @before-enter="dropBeforeenter"
+                @enter="dropEnter"
+                @after-enter="dropAfterenter"
+              >
+                <div class="ball-wrap" ref="ballWrap" v-for="(item, key) in balls" :key="key" v-if="item.show">
+                  <div class="ball"></div>
+                </div>
+              </transition-group>
+            </div>
             <i class="icon icon-shopping_cart"></i>
             <div class="label" v-if="goods.length">{{goodsNum}}</div>
           </div>
@@ -56,11 +67,13 @@
 <script>
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import CountControl from 'components/count-control/count-control.vue'
+import delay from 'lib/delay.js'
 
 export default {
   data(){
     return {
-      isList: false
+      isList: false,
+      balls: []
     }
   },
   props: {
@@ -131,17 +144,57 @@ export default {
         }
       }
     },
-    add(e){
-      // 执行加入购物车动画
-      console.log('执行加入购物车动画。。。')
-      console.log(e)
-    },
     // 消除间隙
     goodScrollEnd(){
       this.$refs.list.refresh()
     },
-    addShopcartAnimation(left, top){
+
+    /* -----------小球动画开始-------------- */
+    add(item){
+      // 执行加入购物车动画
+      this.drop(item.el.target)
+    },
+    drop(el){
+      this.balls.push({
+        el,
+        show: true
+      })
+    },
+    dropBeforeenter(el){
+      let caseRect = this.$refs.case.getBoundingClientRect()
+      let ballRect = this.balls[this.balls.length-1].el.getBoundingClientRect()
+
+      // 设置球dom
+      let x = ballRect.left - caseRect.left
+      let y = ballRect.top - caseRect.top
+      el.style.transform = `translate3d(${x}px, ${y}px,0)`
+    },
+    dropEnter(el, done){
+      // 更新动画
+      /* eslint-disable */
+      el.offsetWidth
+
+      // 逻辑
+      el.style.transform = 'translate3d(0, 0, 0)'
+      el.style.transition = 'all 1s'
+
+      //Vue为了知道过渡的完成，必须设置相应的事件监听器。
+      el.addEventListener('transitionend', done);
+    },
+    dropAfterenter(el){
+      for (let ball of this.balls) {
+        if (ball.show) {
+          ball.show = false
+          break
+        }
+      }
+      delay(this.delayClearDump, 1500, this)()
+    },
+    // 用户不点击时清理balls数组
+    delayClearDump(){
+      this.balls.splice(0)
     }
+    /* -----------小球动画结束-------------- */
   },
   computed: {
     total(){
@@ -193,11 +246,6 @@ export default {
   components: {
     BScroll,
     CountControl
-  },
-  transitions: {
-    addShopcart(){
-
-    }
   }
 }
 </script>
@@ -312,6 +360,22 @@ export default {
           display flex
           align-items center
           justify-content center
+          .case
+            width 40px
+            height 40px
+            position absolute
+            top 0
+            bottom 0
+            left 0
+            right 0
+            margin auto
+            background blue
+            .ball-wrap
+              position absolute
+              width 40px
+              height 40px
+              border-radius 50%
+              background red
           .icon
             color #80858a
             font-size 40px

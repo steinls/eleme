@@ -87,7 +87,7 @@ export default {
   transition all 0.5s
 .slide-fade-enter, .slide-fade-leave-to
   opacity 0
-  transform translate3d(24px,0,0) rotate(180deg)
+  transform translate3d(60px,0,0) rotate(180deg)
 
 .count-control
   height 42px
