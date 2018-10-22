@@ -45,13 +45,13 @@
                   <span class="old-price" v-if="dishe.price !== dishe.price">￥{{dishe.price}}</span>
               </div>
             </div>
-            <count-control :select-foods="selectFoods" :food="dishe"></count-control>
+            <count-control @add="add" :select-foods="selectFoods" :food="dishe"></count-control>
           </div>
 
         </div>
       </b-scroll>
     </div>
-    <shopcart :goods="selectFoods" :min-price="seller.minPrice" :surcharge="seller.deliveryPrice"></shopcart>
+    <shopcart ref="shopcart" :goods="selectFoods" :min-price="seller.minPrice" :surcharge="seller.deliveryPrice"></shopcart>
   </div>
 </template>
 <script>
@@ -113,6 +113,9 @@ export default {
       })
 
       this.select = idx
+    },
+    add(item){
+      this.$refs.shopcart.drop(item.el.target)
     }
   },
   components: {
