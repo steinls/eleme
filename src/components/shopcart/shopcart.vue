@@ -164,19 +164,25 @@ export default {
       let caseRect = this.$refs.case.getBoundingClientRect()
       let ballRect = this.balls[this.balls.length-1].el.getBoundingClientRect()
 
-      // 设置球dom
+      // 设置球初始位置
       let x = ballRect.left - caseRect.left
       let y = ballRect.top - caseRect.top
-      el.style.transform = `translate3d(${x}px, ${y}px,0)`
+      el.style.transform = `translate3d(${x}px, 0,0)`
+
+      let inner = el.getElementsByClassName('ball')[0]
+      inner.style.transform = `translate3d(0, ${y}px, 0)`
     },
     dropEnter(el, done){
       // 更新动画
       /* eslint-disable */
       el.offsetWidth
 
-      // 逻辑
       el.style.transform = 'translate3d(0, 0, 0)'
-      el.style.transition = 'all 1s'
+      el.style.transition = 'all 0.7s'
+
+      let inner = el.getElementsByClassName('ball')[0]
+      inner.style.transform = 'translate3d(0, 0, 0)'
+      inner.style.transition = 'all 0.7s cubic-bezier(.35,-0.53,.37,.76)'
 
       //Vue为了知道过渡的完成，必须设置相应的事件监听器。
       el.addEventListener('transitionend', done);
@@ -190,7 +196,7 @@ export default {
       }
       delay(this.delayClearDump, 1500, this)()
     },
-    // 用户不点击时清理balls数组
+    // 用户不点击时清理一次balls数组
     delayClearDump(){
       this.balls.splice(0)
     }
@@ -369,14 +375,20 @@ export default {
             left 0
             right 0
             margin auto
-            background blue
             .ball-wrap
               position absolute
               width 40px
               height 40px
-              border-radius 50%
-              background red
+              z-index 0
+              .ball
+                position absolute
+                width 40px
+                height 40px
+                border-radius 50%
+                background red
           .icon
+            position relative
+            z-index 2
             color #80858a
             font-size 40px
           .label
