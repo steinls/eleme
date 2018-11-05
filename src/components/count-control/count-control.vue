@@ -1,5 +1,5 @@
 <template>
-  <div class="count-control">
+  <div class="count-control" @click.stop.prevent>
     <transition name="slide-fade">
       <div v-if="foodNum>0" @click="reduce" class="reduce icon-remove_circle_outline"></div>
     </transition>

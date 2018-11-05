@@ -162,7 +162,7 @@ export default {
     },
     dropBeforeenter(el){
       let caseRect = this.$refs.case.getBoundingClientRect()
-      let ballRect = this.balls[this.balls.length-1].el.getBoundingClientRect()
+      let ballRect = this.balls[this.balls.length - 1].el.getBoundingClientRect()
 
       // 设置球初始位置
       let x = ballRect.left - caseRect.left

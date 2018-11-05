@@ -28,7 +28,7 @@
           <!-- 种类标题 -->
           <h3 class="dishes-title">{{kind.name}}</h3>
           <!-- 某种类菜品列表 -->
-          <div class="dishes-item" v-for="(dishe,key) in kind.foods" :key="key">
+          <div class="dishes-item" v-for="(dishe,key) in kind.foods" :key="key" @click="enterDetail(dishe)">
             <div class="img">
               <img :src="dishe.image" alt="">
             </div>
@@ -52,6 +52,8 @@
       </b-scroll>
     </div>
     <shopcart ref="shopcart" :goods="selectFoods" :min-price="seller.minPrice" :surcharge="seller.deliveryPrice"></shopcart>
+
+    <shop-detail ref="shopDetail" :shop="viewShop"></shop-detail>
   </div>
 </template>
 <script>
@@ -60,6 +62,7 @@ import BrandMap from 'components/brand-map/brand-map.vue'
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import Shopcart from 'components/shopcart/shopcart.vue'
 import CountControl from 'components/count-control/count-control.vue'
+import ShopDetail from 'components/shop-detail/shop-detail.vue'
 
 export default {
   props: {
@@ -71,7 +74,8 @@ export default {
     return {
       goods: [],
       select: 0,
-      selectFoods: []
+      selectFoods: [],
+      viewShop: null
     }
   },
   created() {
@@ -116,13 +120,18 @@ export default {
     },
     add(item){
       this.$refs.shopcart.drop(item.el.target)
+    },
+    enterDetail(shop){
+      this.viewShop = shop
+      this.$refs.shopDetail.show()
     }
   },
   components: {
     BrandMap,
     BScroll,
     Shopcart,
-    CountControl
+    CountControl,
+    ShopDetail
   },
   watch: {
     goods() {
