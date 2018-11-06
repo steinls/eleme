@@ -178,11 +178,11 @@ export default {
       el.offsetWidth
 
       el.style.transform = 'translate3d(0, 0, 0)'
-      el.style.transition = 'all 0.7s'
+      el.style.transition = 'all 0.8s'
 
       let inner = el.getElementsByClassName('ball')[0]
       inner.style.transform = 'translate3d(0, 0, 0)'
-      inner.style.transition = 'all 0.7s cubic-bezier(.35,-0.53,.37,.76)'
+      inner.style.transition = 'all 0.8s cubic-bezier(.36,-0.68,.36,.82)'
 
       //Vue为了知道过渡的完成，必须设置相应的事件监听器。
       el.addEventListener('transitionend', done);
