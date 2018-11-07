@@ -36,9 +36,19 @@
         <div class="rating-top">
           <div class="title">商品评价</div>
           <div class="labels-box">
-            <div class="label">
+            <div class="label" :class="{active:selected==='all'}" @click="select('all')">
               <div>
                 全部 <span>{{ratings.all.arr.length}}</span>
+              </div>
+            </div>
+            <div class="label" :class="{active:selected==='fine'}" @click="select('fine')">
+              <div>
+                推荐 <span>{{ratings.fine.arr.length}}</span>
+              </div>
+            </div>
+            <div class="label bad" :class="{active:selected==='bad'}" @click="select('bad')">
+              <div>
+                吐槽 <span>{{ratings.bad.arr.length}}</span>
               </div>
             </div>
           </div>
@@ -46,21 +56,24 @@
             <span class="icon icon-check_circle"></span>只看有内容的评价
           </div>
         </div>
+
         <div class="ratings">
-          <div class="rating">
+          <div class="rating" v-for="(item, key) in currentRatings" :key="key">
             <div class="info">
-              <div class="date"></div>
-              <div class="user"></div>
+              <div class="date">{{item.rateTime|dataParse}}</div>
+              <div class="user">{{item.username}}</div>
             </div>
-            <div class="text"></div>
+            <div class="text">{{item.text}}</div>
           </div>
         </div>
+
       </div>
     </b-scroll>
   </transition>
 </template>
 <script>
 import BScroll from 'base/b-scroll/b-scroll.vue'
+import { formatDate } from 'lib/date.js'
 
 export default {
   props: {
@@ -70,18 +83,20 @@ export default {
   },
   data(){
     return {
-      ishow: false
+      ishow: false,
+      selected: 'all',
+      haveCont: false
     }
   },
   methods: {
     show(){
       this.ishow = true
-      this.$nextTick(() => {
-        console.log(this.shop)
-      })
     },
     hide(){
       this.ishow = false
+    },
+    select(param){
+      this.selected = param
     }
   },
   computed: {
@@ -89,17 +104,14 @@ export default {
       let obj = {}
       obj.all = {
         name: 'all',
-        text: '全部',
         arr: this.shop.ratings
       }
       obj.fine = {
         name: 'fine',
-        text: '推荐',
         arr: []
       }
       obj.bad = {
         name: 'bad',
-        text: '吐槽',
         arr: []
       }
       this.shop.ratings.forEach((item) => {
@@ -112,15 +124,21 @@ export default {
       })
       return obj
     },
-    haveCont(){
-      let arr = []
-      for (let item of this.shop.ratings){
-        if (item.text) {
-          arr.push(item)
-        }
+    currentRatings(){
+      let arr = this.ratings[this.selected].arr
+      if (this.haveCont) {
+        arr.filter((v) => {
+          return v.text !== ''
+        })
       }
       return arr
     }
+  },
+  filters: {
+      dateParse(val){
+        let date = new Date(val)
+        return formatDate(date, 'yyyy-MM-dd hh:mm')
+      }
   },
   components: {
     BScroll
