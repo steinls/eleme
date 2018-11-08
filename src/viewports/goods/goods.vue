@@ -53,7 +53,7 @@
     </div>
     <shopcart ref="shopcart" :goods="selectFoods" :min-price="seller.minPrice" :surcharge="seller.deliveryPrice"></shopcart>
 
-    <shop-detail ref="shopDetail" :shop="viewShop"></shop-detail>
+    <shop-detail ref="shopDetail" :shop="isShopDetail" :goods="selectFoods"></shop-detail>
   </div>
 </template>
 <script>
@@ -75,7 +75,7 @@ export default {
       goods: [],
       select: 0,
       selectFoods: [],
-      viewShop: null
+      isShopDetail: null
     }
   },
   created() {
@@ -122,7 +122,7 @@ export default {
       this.$refs.shopcart.drop(item.el.target)
     },
     enterDetail(shop){
-      this.viewShop = shop
+      this.isShopDetail = shop
       this.$refs.shopDetail.show()
     }
   },

@@ -21,10 +21,13 @@
             <div class="now"><span>￥</span>{{shop.price}}</div>
             <div class="old" v-if="shop.oldPrice"><span>￥</span>{{shop.oldPrice}}</div>
           </div>
-          <div>
-            <div class="controls">
-              加入购物车
-            </div>
+          <div class="control-wrap">
+            <transition name="fade">
+              <div class="control" v-show="!isHave()" @click="add(shop)">
+                加入购物车
+              </div>
+            </transition>
+            <count-control v-show="isHave()" ref="countControl" :food="shop" :selectFoods="goods"></count-control>
           </div>
         </div>
       </div>
@@ -52,18 +55,22 @@
               </div>
             </div>
           </div>
-          <div class="filter-btn">
+          <div class="filter-btn" :class="{active: haveCont}" @click="haveCont = !haveCont">
             <span class="icon icon-check_circle"></span>只看有内容的评价
           </div>
         </div>
 
         <div class="ratings">
-          <div class="rating" v-for="(item, key) in currentRatings" :key="key">
-            <div class="info">
-              <div class="date">{{item.rateTime|dataParse}}</div>
-              <div class="user">{{item.username}}</div>
-            </div>
-            <div class="text">{{item.text}}</div>
+          <div class="rating-box" v-for="(item, key) in currentRatings" :key="key">
+            <transition name="ratignOut">
+              <div class="rating">
+                <div class="rating-info">
+                  <div class="date">{{item.rateTime|dateParse}}</div>
+                  <div class="user">{{item.username}}</div>
+                </div>
+                <div class="text"><span class="icon" :class="getIcon(item.rateType)"></span>{{item.text || '暂无评论，默认好评！'}}</div>
+              </div>
+            </transition>
           </div>
         </div>
 
@@ -73,12 +80,16 @@
 </template>
 <script>
 import BScroll from 'base/b-scroll/b-scroll.vue'
+import CountControl from 'components/count-control/count-control.vue'
 import { formatDate } from 'lib/date.js'
 
 export default {
   props: {
     shop: {
       type: Object
+    },
+    goods: {
+      type: Array
     }
   },
   data(){
@@ -97,6 +108,17 @@ export default {
     },
     select(param){
       this.selected = param
+    },
+    getIcon(type){
+      return !type ? 'icon-thumb_up up' : 'icon-thumb_down down'
+    },
+    isHave(){
+      for(let item of this.goods){
+        if(item.name === this.shop.name)return true
+      }
+    },
+    add(shop){
+      this.$refs.countControl.add()
     }
   },
   computed: {
@@ -127,7 +149,8 @@ export default {
     currentRatings(){
       let arr = this.ratings[this.selected].arr
       if (this.haveCont) {
-        arr.filter((v) => {
+        arr = arr.filter((v) => {
+          console.log(v)
           return v.text !== ''
         })
       }
@@ -135,18 +158,24 @@ export default {
     }
   },
   filters: {
-      dateParse(val){
-        let date = new Date(val)
-        return formatDate(date, 'yyyy-MM-dd hh:mm')
-      }
+    dateParse(val){
+      let date = new Date(val)
+      return formatDate(date, 'yyyy-MM-dd hh:mm')
+    }
   },
   components: {
-    BScroll
+    BScroll,
+    CountControl
   }
 }
 </script>
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
+
+.fade-enter-active, .fade-leave-active
+  transition opacity 0.85s
+.fade-enter, .fade-leave-to
+  opacity 0
 
 @keyframes fadeInRight {
   from {
@@ -174,6 +203,7 @@ export default {
   right 0
   background #f3f5f7
   overflow hidden
+  z-index 1
   .top
     position relative
     width 100%
@@ -240,16 +270,21 @@ export default {
           text-decoration line-through
         span
           font-size 16px
-      .controls
+      .control-wrap
         width 150px
         height 50px
-        font-size 20px
-        color #e9f4fb
-        background #00a0dc
-        display flex
-        align-items center
-        justify-content center
-        border-radius 25px
+        position relative
+        .control
+          position absolute
+          width 150px
+          height 50px
+          font-size 20px
+          color #e9f4fb
+          background #00a0dc
+          display flex
+          align-items center
+          justify-content center
+          border-radius 25px
   .content
     margin-top 32px
     border-top 2px solid #e6e7e8
@@ -273,7 +308,9 @@ export default {
     .rating-top
       box-sizing border-box
       padding 36px
-      height 290px
+      padding-bottom 0
+      // height 290px
+      height 300px
       background #fff
       border-bottom 2px solid #e6e7e8
       .title
@@ -314,4 +351,31 @@ export default {
         .icon
           font-size 40px
           margin-right 12px
+          margin-left 4px
+        &.active
+          .icon
+            color #00c850
+    .rating-box
+      padding 0 36px
+      background #fff
+      border-1px-b(#e6e7e8)
+      .rating
+        box-sizing border-box
+        height 134px
+        padding 36px 0
+        .rating-info
+          display flex
+          justify-content space-between
+          color #93999f
+          font-size 20px
+          margin-bottom 23px
+        .text
+          font-size 24px
+          color #2c3238
+          .icon
+            margin-right 10px
+            &.up
+              color #00a0dc
+            &.down
+              color #b7bbbf
 </style>

@@ -14,9 +14,11 @@
 <script>
 export default {
   props: {
+    // 商品信息
     food: {
       type: Object
     },
+    // 已选择的商品列表
     selectFoods: {
       type: Array
     }
@@ -90,8 +92,11 @@ export default {
   transform translate3d(60px,0,0) rotate(180deg)
 
 .count-control
+  width 136px
   height 42px
   display flex
+  justify-content flex-end
+  align-items center
   .add,.reduce
     font-size 40px
     color #00a0dc

@@ -287,6 +287,7 @@ export default {
   bottom 0
   height 96px
   width 100%
+  z-index 10
   .sheet
     position fixed
     top 0
