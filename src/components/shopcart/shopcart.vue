@@ -21,7 +21,7 @@
             <transition-group name="small-fade" tag="div">
               <li ref="listItem" v-for="item in goods" :key="item.name">
                 <div>{{item.name}}</div>
-                <count-control @add="add" @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
+                <count-control @reduce="reduce" :selectFoods="goods" :food="item"></count-control>
               </li>
             </transition-group>
           </ul>
@@ -68,6 +68,7 @@
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import CountControl from 'components/count-control/count-control.vue'
 import delay from 'lib/delay.js'
+import bus from 'lib/vue-bus.js'
 
 export default {
   data(){
@@ -108,8 +109,10 @@ export default {
       }
     }
   },
-  mounted(){
-    console.log(this.goods)
+  created(){
+    bus.$on('addcart', (obj) => {
+      this.drop(obj.e.target)
+    })
   },
   methods: {
     // 清空
@@ -150,10 +153,6 @@ export default {
     },
 
     /* -----------小球动画开始-------------- */
-    add(item){
-      // 执行加入购物车动画
-      this.drop(item.el.target)
-    },
     drop(el){
       this.balls.push({
         el,

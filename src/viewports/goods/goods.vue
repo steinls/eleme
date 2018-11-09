@@ -45,7 +45,7 @@
                   <span class="old-price" v-if="dishe.price !== dishe.price">￥{{dishe.price}}</span>
               </div>
             </div>
-            <count-control @add="add" :select-foods="selectFoods" :food="dishe"></count-control>
+            <count-control :select-foods="selectFoods" :food="dishe"></count-control>
           </div>
 
         </div>
@@ -117,9 +117,6 @@ export default {
       })
 
       this.select = idx
-    },
-    add(item){
-      this.$refs.shopcart.drop(item.el.target)
     },
     enterDetail(shop){
       this.isShopDetail = shop

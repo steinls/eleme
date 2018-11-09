@@ -22,11 +22,11 @@
             <div class="old" v-if="shop.oldPrice"><span>￥</span>{{shop.oldPrice}}</div>
           </div>
           <div class="control-wrap">
-            <transition name="fade">
-              <div class="control" v-show="!isHave()" @click="add(shop)">
+            <!-- <transition name="fade"> -->
+              <div class="control" v-show="!isHave()" @click="add($event)">
                 加入购物车
               </div>
-            </transition>
+            <!-- </transition> -->
             <count-control v-show="isHave()" ref="countControl" :food="shop" :selectFoods="goods"></count-control>
           </div>
         </div>
@@ -113,12 +113,12 @@ export default {
       return !type ? 'icon-thumb_up up' : 'icon-thumb_down down'
     },
     isHave(){
-      for(let item of this.goods){
-        if(item.name === this.shop.name)return true
+      for (let item of this.goods) {
+        if (item.name === this.shop.name) return true
       }
     },
-    add(shop){
-      this.$refs.countControl.add()
+    add(e){
+      this.$refs.countControl.add(e)
     }
   },
   computed: {

@@ -12,6 +12,8 @@
   </div>
 </template>
 <script>
+import bus from 'lib/vue-bus.js'
+
 export default {
   props: {
     // 商品信息
@@ -24,7 +26,7 @@ export default {
     }
   },
   methods: {
-    add(el){
+    add(e){
       let idx = this.inquire(this.food.name)
       let isAdd = false
       if (idx === -1) {
@@ -37,10 +39,14 @@ export default {
       this.$emit('add', {
         idx,
         isAdd,
-        el
+        e
+      })
+
+      bus.$emit('addcart', {
+        e
       })
     },
-    reduce(el){
+    reduce(e){
       let idx = this.inquire(this.food.name)
       let isRemove = false
       if (idx !== -1) {
@@ -55,7 +61,7 @@ export default {
       this.$emit('reduce', {
         idx,
         isRemove,
-        el
+        e
       })
     },
     inquire(name){
