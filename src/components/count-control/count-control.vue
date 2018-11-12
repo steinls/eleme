@@ -43,6 +43,8 @@ export default {
       })
 
       bus.$emit('addcart', {
+        idx,
+        isAdd,
         e
       })
     },

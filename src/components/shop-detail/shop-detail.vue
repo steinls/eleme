@@ -1,8 +1,9 @@
 <template>
   <transition name="fadeInRight">
-    <b-scroll class="shop-detail" v-if="ishow">
-      <div class="top">
-        <img :src="shop.image" alt="">
+    <div class="shop-detail" v-if="ishow">
+      <!-- 图片 -->
+      <div ref="bgBox" class="top">
+        <img ref="bgImage" :src="shop.image" alt="">
         <div class="bar">
           <div class="back icon-arrow_lift" @click="hide()"></div>
           <div class="title">
@@ -10,72 +11,80 @@
           </div>
         </div>
       </div>
-      <div class="info">
-        <div class="name">{{shop.name}}</div>
-        <div class="sales">
-          <div class="moon-sell">月售{{shop.sellCount}}份</div>
-          <div class="like-rate">好评率{{shop.rating}}%</div>
-        </div>
-        <div class="price-wrap">
-          <div class="price">
-            <div class="now"><span>￥</span>{{shop.price}}</div>
-            <div class="old" v-if="shop.oldPrice"><span>￥</span>{{shop.oldPrice}}</div>
-          </div>
-          <div class="control-wrap">
-            <!-- <transition name="fade"> -->
-              <div class="control" v-show="!isHave()" @click="add($event)">
-                加入购物车
-              </div>
-            <!-- </transition> -->
-            <count-control v-show="isHave()" ref="countControl" :food="shop" :selectFoods="goods"></count-control>
-          </div>
-        </div>
-      </div>
-      <div class="content">
-        <div class="title">商品介绍</div>
-        <div class="des">{{shop.description||'店家暂无描述！'}}</div>
-      </div>
-      <div class="ratings-wrap">
-        <div class="rating-top">
-          <div class="title">商品评价</div>
-          <div class="labels-box">
-            <div class="label" :class="{active:selected==='all'}" @click="select('all')">
-              <div>
-                全部 <span>{{ratings.all.arr.length}}</span>
-              </div>
-            </div>
-            <div class="label" :class="{active:selected==='fine'}" @click="select('fine')">
-              <div>
-                推荐 <span>{{ratings.fine.arr.length}}</span>
-              </div>
-            </div>
-            <div class="label bad" :class="{active:selected==='bad'}" @click="select('bad')">
-              <div>
-                吐槽 <span>{{ratings.bad.arr.length}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="filter-btn" :class="{active: haveCont}" @click="haveCont = !haveCont">
-            <span class="icon icon-check_circle"></span>只看有内容的评价
-          </div>
-        </div>
 
-        <div class="ratings">
-          <div class="rating-box" v-for="(item, key) in currentRatings" :key="key">
-            <transition name="ratignOut">
-              <div class="rating">
-                <div class="rating-info">
-                  <div class="date">{{item.rateTime|dateParse}}</div>
-                  <div class="user">{{item.username}}</div>
-                </div>
-                <div class="text"><span class="icon" :class="getIcon(item.rateType)"></span>{{item.text || '暂无评论，默认好评！'}}</div>
-              </div>
-            </transition>
-          </div>
-        </div>
+      <b-scroll class="next-wrap">
+          <!-- 信息 -->
+           <div class="info">
+             <div class="name">{{shop.name}}</div>
+             <div class="sales">
+               <div class="moon-sell">月售{{shop.sellCount}}份</div>
+               <div class="like-rate">好评率{{shop.rating}}%</div>
+             </div>
+             <div class="price-wrap">
+               <div class="price">
+                 <div class="now"><span>￥</span>{{shop.price}}</div>
+                 <div class="old" v-if="shop.oldPrice"><span>￥</span>{{shop.oldPrice}}</div>
+               </div>
+               <div class="control-wrap">
+                 <transition name="fade">
+                   <div class="control" v-show="!isHave()" @click="add($event)">
+                     加入购物车
+                   </div>
+                 </transition>
+                 <count-control v-show="isHave()" ref="countControl" :food="shop" :selectFoods="goods"></count-control>
+               </div>
+             </div>
+           </div>
 
-      </div>
-    </b-scroll>
+           <!--商品介绍 -->
+           <div class="content">
+             <div class="title">商品介绍</div>
+             <div class="des">{{shop.description||'店家暂无描述！'}}</div>
+           </div>
+
+           <!-- 评价 -->
+           <div class="ratings-wrap">
+             <div class="rating-top">
+               <div class="title">商品评价</div>
+               <div class="labels-box">
+                 <div class="label" :class="{active:selected==='all'}" @click="select('all')">
+                   <div>
+                     全部 <span>{{ratings.all.arr.length}}</span>
+                   </div>
+                 </div>
+                 <div class="label" :class="{active:selected==='fine'}" @click="select('fine')">
+                   <div>
+                     推荐 <span>{{ratings.fine.arr.length}}</span>
+                   </div>
+                 </div>
+                 <div class="label bad" :class="{active:selected==='bad'}" @click="select('bad')">
+                   <div>
+                     吐槽 <span>{{ratings.bad.arr.length}}</span>
+                   </div>
+                 </div>
+               </div>
+               <div class="filter-btn" :class="{active: haveCont}" @click="haveCont = !haveCont">
+                 <span class="icon icon-check_circle"></span>只看有内容的评价
+               </div>
+             </div>
+
+             <div class="ratings">
+               <div class="rating-box" v-for="(item, key) in currentRatings" :key="key">
+                 <transition name="ratignOut">
+                   <div class="rating">
+                     <div class="rating-info">
+                       <div class="date">{{item.rateTime|dateParse}}</div>
+                       <div class="user">{{item.username}}</div>
+                     </div>
+                     <div class="text"><span class="icon" :class="getIcon(item.rateType)"></span>{{item.text || '暂无评论，默认好评！'}}</div>
+                   </div>
+                 </transition>
+               </div>
+             </div>
+          </div>
+      </b-scroll>
+
+    </div>
   </transition>
 </template>
 <script>
@@ -99,6 +108,12 @@ export default {
       haveCont: false
     }
   },
+  mounted(){
+    this.$nextTick(() => {
+      // this.$refs.bScroll.refresh()
+      // console.log(this.$refs.bScroll)
+    })
+  },
   methods: {
     show(){
       this.ishow = true
@@ -116,8 +131,10 @@ export default {
       for (let item of this.goods) {
         if (item.name === this.shop.name) return true
       }
+      return false
     },
     add(e){
+      if (this.isHave()) return
       this.$refs.countControl.add(e)
     }
   },
@@ -202,8 +219,10 @@ export default {
   left 0
   right 0
   background #f3f5f7
-  overflow hidden
+  overflow auto
   z-index 1
+  display flex
+  flex-direction column
   .top
     position relative
     width 100%
@@ -234,148 +253,157 @@ export default {
         font-size 38px
       .title
         font-size 34px
-  .info
-    box-sizing border-box
-    padding 36px
-    height 218px
-    border-bottom 2px solid #e6e7e8
-    background #ffffff
-    .name
-      color #07111b
-      font-size 28px
-      font-weight bolder
-    .sales
-      display flex
-      margin-top 16px
-      font-size 18px
-      color #93999f
-      .moon-sell
-        margin-right 23px
-    .price-wrap
-      margin-top 35px
-      height 50px
-      display flex
-      align-items center
-      justify-content space-between
-      .price
-        display flex
-        font-size 16px
-        align-items center
-        .now
-          color #f01414
-          font-size 20px
-          margin-right 16px
-        .old
-          color #93999f
-          text-decoration line-through
-        span
-          font-size 16px
-      .control-wrap
-        width 150px
-        height 50px
-        position relative
-        .control
-          position absolute
-          width 150px
-          height 50px
-          font-size 20px
-          color #e9f4fb
-          background #00a0dc
-          display flex
-          align-items center
-          justify-content center
-          border-radius 25px
-  .content
-    margin-top 32px
-    border-top 2px solid #e6e7e8
-    border-bottom 2px solid #e6e7e8
-    box-sizing border-box
-    width 100%
-    height 217px
-    padding 36px
-    background #ffffff
-    font-size 28px
-    .des
-      margin-top 12px
-      font-size 24px
-      line-height 48px
-  .ratings-wrap
-    box-sizing border-box
-    margin-top 32px
-    border-top 2px solid #e6e7e8
-    border-bottom 2px solid #e6e7e8
-    width 100%
-    .rating-top
+  .next-wrap
+    // flex 1
+    // position relative
+    // overflow auto
+    position fixed
+    bottom 30px
+    top 750px
+    left 0
+    right 0
+    .info
       box-sizing border-box
       padding 36px
-      padding-bottom 0
-      // height 290px
-      height 300px
-      background #fff
+      height 218px
       border-bottom 2px solid #e6e7e8
-      .title
-        font-size 30px
+      background #ffffff
+      .name
         color #07111b
-      .labels-box
-        margin-top 36px
-        height 66px
+        font-size 28px
+        font-weight bolder
+      .sales
         display flex
-        border-1px-b(#e6e7e8)
-        padding-bottom 36px
-        .label
-          width 120px
-          height 64px
-          border-radius 2px
-          background #ccecf8
-          margin-right 16px
-          color #4d555d
-          font-size 26px
-          display flex
-          justify-content center
-          align-items center
-          span
-            font-size 18px
-          &.active
-            background #00a0dc
-            color #ffffff
-        .bad
-          background #e9ebec
-          &.active
-            background #93999f
-      .filter-btn
-        height 96px
+        margin-top 16px
+        font-size 18px
+        color #93999f
+        .moon-sell
+          margin-right 23px
+      .price-wrap
+        margin-top 35px
+        height 50px
         display flex
         align-items center
-        font-size 24px
-        color #b7bbbf
-        .icon
-          font-size 40px
-          margin-right 12px
-          margin-left 4px
-        &.active
-          .icon
-            color #00c850
-    .rating-box
-      padding 0 36px
-      background #fff
-      border-1px-b(#e6e7e8)
-      .rating
-        box-sizing border-box
-        height 134px
-        padding 36px 0
-        .rating-info
+        justify-content space-between
+        .price
           display flex
-          justify-content space-between
-          color #93999f
-          font-size 20px
-          margin-bottom 23px
-        .text
+          font-size 16px
+          align-items center
+          .now
+            color #f01414
+            font-size 20px
+            margin-right 16px
+          .old
+            color #93999f
+            text-decoration line-through
+          span
+            font-size 16px
+        .control-wrap
+          width 150px
+          height 50px
+          position relative
+          .control
+            position absolute
+            width 150px
+            height 50px
+            font-size 20px
+            color #e9f4fb
+            background #00a0dc
+            display flex
+            align-items center
+            justify-content center
+            border-radius 25px
+    .content
+      margin-top 32px
+      border-top 2px solid #e6e7e8
+      border-bottom 2px solid #e6e7e8
+      box-sizing border-box
+      width 100%
+      height 217px
+      padding 36px
+      background #ffffff
+      font-size 28px
+      .des
+        margin-top 12px
+        font-size 24px
+        line-height 48px
+    .ratings-wrap
+      box-sizing border-box
+      margin-top 32px
+      border-top 2px solid #e6e7e8
+      border-bottom 2px solid #e6e7e8
+      width 100%
+      .rating-top
+        box-sizing border-box
+        padding 36px
+        padding-bottom 0
+        // height 290px
+        height 300px
+        background #fff
+        border-bottom 2px solid #e6e7e8
+        .title
+          font-size 30px
+          color #07111b
+        .labels-box
+          margin-top 36px
+          height 66px
+          display flex
+          border-1px-b(#e6e7e8)
+          padding-bottom 36px
+          .label
+            width 120px
+            height 64px
+            border-radius 2px
+            background #ccecf8
+            margin-right 16px
+            color #4d555d
+            font-size 26px
+            display flex
+            justify-content center
+            align-items center
+            span
+              font-size 18px
+            &.active
+              background #00a0dc
+              color #ffffff
+          .bad
+            background #e9ebec
+            &.active
+              background #93999f
+        .filter-btn
+          height 96px
+          display flex
+          align-items center
           font-size 24px
-          color #2c3238
+          color #b7bbbf
           .icon
-            margin-right 10px
-            &.up
-              color #00a0dc
-            &.down
-              color #b7bbbf
+            font-size 40px
+            margin-right 12px
+            margin-left 4px
+          &.active
+            .icon
+              color #00c850
+      .rating-box
+        padding 0 36px
+        background #fff
+        border-1px-b(#e6e7e8)
+        .rating
+          box-sizing border-box
+          height 134px
+          padding 36px 0
+          .rating-info
+            display flex
+            justify-content space-between
+            color #93999f
+            font-size 20px
+            margin-bottom 23px
+          .text
+            font-size 24px
+            color #2c3238
+            .icon
+              margin-right 10px
+              &.up
+                color #00a0dc
+              &.down
+                color #b7bbbf
 </style>
