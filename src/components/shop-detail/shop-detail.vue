@@ -172,33 +172,23 @@ export default {
       if (newY > 0) {
         this.$refs.bgBox.style.transform = `scale(${1 + zoom})`
       } else {
-        this.$refs.bgImg.style.filter = `blur(${Math.min(zoom * 20, 20)}px)`
+        this.$refs.bgImg.style.filter = `blur(${Math.min(zoom * 16, 16)}px)`
       }
 
-      if (newY < this.MIN_SCROLLY) {
-        Object.assign(this.$refs.bgBox.style, {
-          height: `${this.BAR_HEIGHT}px`,
-          paddingTop: 0,
-          zIndex: 10
-        })
+      // 当距离顶部一定距离后，改变top样式
+      if (newY <= this.MIN_SCROLLY) {
+        this.$refs.bgBox.style.height = `${this.BAR_HEIGHT}px`
+        this.$refs.bgBox.style.paddingTop = 0,
+        this.$refs.bgBox.style.zIndex = 10
 
-        Object.assign(this.$refs.bgImg.style, {
-          height: `${this.BG_HEIGHT}px`
-        })
-
-        Object.assign(this.$refs.filter.style, {
-          display: 'block'
-        })
+        this.$refs.bgImg.style.height =  `${this.BG_HEIGHT}px`
+        this.$refs.filter.style.opacity = 1
       } else {
-        Object.assign(this.$refs.bgBox.style, {
-          height: 0,
-          paddingTop: '80%',
-          zIndex: 1
-        })
+        this.$refs.bgBox.style.height = 0
+        this.$refs.bgBox.style.paddingTop = '80%'
+        this.$refs.bgBox.style.zIndex = 1
 
-        Object.assign(this.$refs.filter.style, {
-          display: 'none'
-        })
+        this.$refs.filter.style.opacity = 0
       }
     }
   },
@@ -319,7 +309,6 @@ export default {
     padding-top 80%
     transform-origin top
     overflow hidden
-    transform translate3d(0, 0, 0)
     img
       position absolute
       top 0
@@ -327,16 +316,16 @@ export default {
       width 100%
       height 100%
     .filter
-      transform3d translate3d(0,0,0)
       position absolute
       top 0
       bottom 0
       left 0
       right 0
       z-index 10
-      filter blur(3px)
-      background: rgba(7, 17, 27, 0.1)
-      display none
+      background: rgba(7, 17, 27, 0.4)
+      opacity 0
+      transform translateZ(0)
+      transition opacity 1s
   .next-wrap
     position absolute
     bottom 0
