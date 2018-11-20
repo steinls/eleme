@@ -29,6 +29,10 @@ export default {
       type: Boolean,
       default: true
     },
+    stopPropagation: {
+      type: Boolean,
+      default: true
+    },
     // 1 滚动的时候会非实时（屏幕滑动超过一定时间后）派发scroll事件
     // 2 滚动的时候实时派发scroll事件
     // 3 滚动在动画进行时都会实时派发scroll事件，
@@ -73,7 +77,8 @@ export default {
 
       this.scroll = new BetterScroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        click: this.click
+        click: this.click,
+        stopPropagation: this.stopPropagation
       })
 
       if (this.listenScroll) {

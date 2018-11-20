@@ -56,27 +56,7 @@
             <b-scroll class="list">
               <div class="list-item" v-for="(item, key) in shop.ratings" :key="key" v-if="showType(item.rateType, item.text)">
                 <div class="list-item-top">
-                  <div class="date">{{item.rateTime}}</div>
-                  <div class="user">
-                    <div class="user-name">{{item.username}}</div>
-                    <img :src="item.avatar" alt="" class="user-avatar">
-                  </div>
-                </div>
-                <div class="text">{{item.text || '用户暂无评价！'}}</div>
-              </div>
-              <div class="list-item" v-for="(item, key) in shop.ratings" :key="key" v-if="showType(item.rateType, item.text)">
-                <div class="list-item-top">
-                  <div class="date">{{item.rateTime}}</div>
-                  <div class="user">
-                    <div class="user-name">{{item.username}}</div>
-                    <img :src="item.avatar" alt="" class="user-avatar">
-                  </div>
-                </div>
-                <div class="text">{{item.text || '用户暂无评价！'}}</div>
-              </div>
-              <div class="list-item" v-for="(item, key) in shop.ratings" :key="key" v-if="showType(item.rateType, item.text)">
-                <div class="list-item-top">
-                  <div class="date">{{item.rateTime}}</div>
+                  <div class="date">{{item.rateTime | toDate}}</div>
                   <div class="user">
                     <div class="user-name">{{item.username}}</div>
                     <img :src="item.avatar" alt="" class="user-avatar">
@@ -95,7 +75,7 @@
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import CountControl from 'components/count-control/count-control.vue'
 import RatingType from 'components/rating-type/rating-type.vue'
-import formaDate from 'lib/date.js'
+import {formatDate} from 'lib/date.js'
 
 const ALL = 2
 
@@ -205,6 +185,12 @@ export default {
   watch: {
     scrollY(newY){
       this.changeDom(newY)
+    }
+  },
+  filters: {
+    toDate(val){
+      let date = new Date(val)
+      return formatDate(date, 'yyyy-MM-dd hh:mm')
     }
   }
 }
