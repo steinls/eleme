@@ -75,11 +75,10 @@
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import CountControl from 'components/count-control/count-control.vue'
 import RatingType from 'components/rating-type/rating-type.vue'
-import {formatDate} from 'lib/date.js'
-
-const ALL = 2
+import {ratingTypeMixin} from 'vmixin/mixin.js'
 
 export default {
+  mixins: [ratingTypeMixin],
   props: {
     shop: {
       type: Object
@@ -91,16 +90,14 @@ export default {
   data(){
     return {
       ishow: false,
-      scrollY: 0,
-      selectType: ALL,
-      onlycontent: false
+      scrollY: 0
     }
   },
   methods: {
     show(){
       this.ishow = true
       this.onlycontent = false
-      this.selectType = ALL
+      this.selectType = this.ALL
 
       this.$nextTick(() => {
         // 初始化参数
@@ -161,20 +158,6 @@ export default {
 
         this.$refs.filter.style.opacity = 0
       }
-    },
-    select(type){
-      this.selectType = type
-    },
-    filterEmpty(tag){
-      this.onlycontent = tag
-    },
-    showType(type, text){
-      if (this.onlycontent && !text) return false
-      if (this.selectType === ALL) {
-        return true
-      } else {
-        return this.selectType === type
-      }
     }
   },
   components: {
@@ -185,12 +168,6 @@ export default {
   watch: {
     scrollY(newY){
       this.changeDom(newY)
-    }
-  },
-  filters: {
-    toDate(val){
-      let date = new Date(val)
-      return formatDate(date, 'yyyy-MM-dd hh:mm')
     }
   }
 }

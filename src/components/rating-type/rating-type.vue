@@ -3,13 +3,13 @@
     <div class="title">商品评价</div>
     <div class="types">
       <div class="type-item" :class="{active: selectType === ALL}" @click="select(ALL)">
-        <div>{{type[0]}}<span>{{all.length}}</span></div>
+        <div>{{type[0]}}<span>{{allArr.length}}</span></div>
       </div>
       <div class="type-item" :class="{active: selectType === FINE}" @click="select(FINE)">
-        <div>{{type[1]}}<span>{{fine.length}}</span></div>
+        <div>{{type[1]}}<span>{{fineArr.length}}</span></div>
       </div>
       <div class="type-item" :class="{active: selectType === BAD}" @click="select(BAD)">
-        <div>{{type[2]}}<span>{{bad.length}}</span></div>
+        <div>{{type[2]}}<span>{{badArr.length}}</span></div>
       </div>
     </div>
     <div class="only-content" :class="{active: onlycontent}" @click="tagOnlyContent()">
@@ -57,15 +57,6 @@ export default {
     this.ALL = ALL
     this.FINE = FINE
     this.BAD = BAD
-
-    // 根据数据分类进行统计数量
-    this.all = this.data
-    this.fine = this.data.filter((item) => {
-      return item.rateType === this.FINE
-    })
-    this.bad = this.data.filter((item) => {
-      return item.rateType === this.BAD
-    })
   },
   mounted(){
     // 根据传入的参数进行初始化
@@ -82,6 +73,21 @@ export default {
       this.onlycontent = !this.onlycontent
 
       this.$emit('filterEmpty', this.onlycontent)
+    }
+  },
+  computed: {
+    allArr(){
+      return this.data
+    },
+    fineArr(){
+      return this.data.filter((item) => {
+        return item.rateType === this.FINE
+      })
+    },
+    badArr(){
+      return this.data.filter((item) => {
+        return item.rateType === this.BAD
+      })
     }
   }
 }

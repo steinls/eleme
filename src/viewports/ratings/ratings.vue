@@ -1,36 +1,35 @@
 <template>
-  <div class="ratings">
-    ratings
-    <div class="content">
-      <rating-type></rating-type>
-      <b-scroll class="list" :data="ratings">
-<!--         <div class="list-item" v-for="item in ratings">
-          <div class="top">
-            <div class="user">
-              <div class="user-avatar"><img :src="item.avatar" alt=""></div>
-              <div class="right">
-                <div class="user-name">{{item.username}}</div>
-                <div class="star">asdf</div>
-              </div>
+  <b-scroll class="ratings">
+    <rating-type @change="select" @filterEmpty="filterEmpty" :data="ratings" :type="['全部','满意','不满意']"></rating-type>
+    <div class="list" :data="ratings">
+      <div class="list-item" v-for="(item, key) in ratings" :key="key" v-if="showType(item.rateType, item.text)">
+        <div class="top">
+          <div class="user">
+            <div class="user-avatar"><img :src="item.avatar" alt=""></div>
+            <div class="right">
+              <div class="user-name">{{item.username}}</div>
+              <div class="star">asdf</div>
             </div>
-            <div class="date">1212124124</div>
           </div>
+          <div class="date">{{item.rateTime | toDate}}</div>
+        </div>
 
-          <div class="bottom">
-            <div class="text">{{item.text}}</div>
-            <div class="labels"></div>
-          </div>
-        </div> -->
-      </b-scroll>
+        <div class="bottom">
+          <div class="text">{{item.text}}</div>
+          <div class="labels"></div>
+        </div>
+      </div>
     </div>
-  </div>
+  </b-scroll>
 </template>
 <script>
 import RatingType from 'components/rating-type/rating-type.vue'
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import {ERR_OK} from 'api/config.js'
+import {ratingTypeMixin} from 'vmixin/mixin.js'
 
 export default {
+  mixins: [ratingTypeMixin],
   data () {
     return {
       ratings: []
@@ -41,12 +40,13 @@ export default {
       let response = res.data
       if (response.errno === ERR_OK) {
         this.ratings = response.data
+        console.log(this.ratings)
       }
     })
   },
   components: {
     RatingType,
-    BScroll 
+    BScroll
   }
 }
 </script>
@@ -54,14 +54,16 @@ export default {
 @import '../../common/stylus/mixin.styl'
 
 .ratings
+  position fixed
+  top 352px
+  left 0
+  right 0
+  bottom 96px
   display flex
   flex-direction column
-  width 100%
+  overflow auto
   .list
     flex 1
-    width 100%
-    background red
-    overflow-y auto
     .list-item
       box-sizing border-box
       padding 36px
