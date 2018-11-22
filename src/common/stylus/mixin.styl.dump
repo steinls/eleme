@@ -1,16 +1,16 @@
-// ±³¾°Í¼Æ¬
+// èƒŒæ™¯å›¾ç‰‡
 bg-image($url)
   background-image url($url + "@2x.png")
   @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
     background-image url($url + "@3x.png")
 
-// ²»»»ĞĞ
+// ä¸æ¢è¡Œ
 no-wrap()
   text-overflow ellipsis
   overflow hidden
   white-space nowrap
 
-// À©Õ¹µã»÷ÇøÓò
+// æ‰©å±•ç‚¹å‡»åŒºåŸŸ
 extend-click()
   position relative
   &:after
@@ -22,7 +22,7 @@ extend-click()
     bottom -10px
 
 
-// 1ÏñËØ±ß¿ò
+// 1åƒç´ è¾¹æ¡†
 border-1px-t($color)
   position:relative
   &:after

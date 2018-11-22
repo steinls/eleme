@@ -40,6 +40,7 @@ module.exports = {
       'components': resolve('src/components'),
       'api': resolve('src/api'),
       'lib': resolve('src/lib'),
+      'vmixin': resolve('src/vmixin')
     }
   },
   module: {

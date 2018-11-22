@@ -29,6 +29,9 @@ export const ratingTypeMixin = {
       } else {
         return this.selectType === type
       }
+    },
+    isLaud(type){
+      return type === 0 ? 'icon-thumb_up up' : 'icon-thumb_down down'
     }
   },
   filters: {

@@ -62,7 +62,10 @@
                     <img :src="item.avatar" alt="" class="user-avatar">
                   </div>
                 </div>
-                <div class="text">{{item.text || '用户暂无评价！'}}</div>
+                <div class="text">
+                  <div class="icon" :class="isLaud(item.rateType)"></div>
+                  {{item.text || '用户暂无评价！'}}
+                </div>
               </div>
             </b-scroll>
           </div>
@@ -75,7 +78,7 @@
 import BScroll from 'base/b-scroll/b-scroll.vue'
 import CountControl from 'components/count-control/count-control.vue'
 import RatingType from 'components/rating-type/rating-type.vue'
-import {ratingTypeMixin} from 'vmixin/mixin.js'
+import {ratingTypeMixin} from 'vmixin/ratingTypeMixin.js'
 
 export default {
   mixins: [ratingTypeMixin],
@@ -357,7 +360,15 @@ export default {
         &:first-child:after
           display none
         .text
+          display flex
           color #07111b
           font-size 22px
           margin-top 21px
+          .icon
+            font-size 24px
+            margin-right 10px
+            &.up
+              color #00a0dc
+            &.down
+              color #b7bbbf
   </style>

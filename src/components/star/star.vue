@@ -83,7 +83,7 @@ export default {
     .star
       width 20px
       height 20px
-      margin-right 12px
+      margin-right 6px
       &:last-child
         margin-right 0
       &.star-on
