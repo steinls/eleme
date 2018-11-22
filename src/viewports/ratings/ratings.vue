@@ -59,7 +59,7 @@
           <div class="labels-wrap">
             <div class="icon" :class="isLaud(item.rateType)"></div>
             <div class="labels" v-if="item.recommend.length">
-              <div class="labels-item" v-for="label in item.recommend">
+              <div class="labels-item" v-for="(label, key) in item.recommend" :key="key">
                 {{label}}
               </div>
             </div>
