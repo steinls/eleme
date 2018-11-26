@@ -36,7 +36,6 @@
       </div>
     </div>
 
-
     <!-- 评论 -->
     <rating-type @change="select" @filterEmpty="filterEmpty" :data="ratings" :type="['全部','满意','不满意']"></rating-type>
     <div class="list" :data="ratings">
@@ -93,7 +92,6 @@ export default {
       let response = res.data
       if (response.errno === ERR_OK) {
         this.ratings = response.data
-        console.log(this.ratings)
       }
     })
   },
@@ -112,7 +110,7 @@ export default {
   top 352px
   left 0
   right 0
-  bottom 96px
+  bottom 0
   display flex
   flex-direction column
   overflow auto

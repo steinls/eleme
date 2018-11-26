@@ -2,7 +2,9 @@
   <div id="app">
     <m-header :seller="seller"></m-header>
     <tab></tab>
-    <router-view :seller="seller"/>
+    <keep-alive>
+      <router-view :seller="seller"/>
+    </keep-alive>
   </div>
 </template>
 
@@ -24,8 +26,6 @@ export default {
       let data = response.body
       if (data.errno === ERR_OK) {
         this.seller = data.data
-        console.log('seller-data---')
-        console.log(this.seller)
       }
     })
   },

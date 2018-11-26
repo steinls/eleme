@@ -14,6 +14,14 @@ export default {
     }
   },
   props: {
+    scrollX: {
+      type: Boolean,
+      default: false
+    },
+    scrollY: {
+      type: Boolean,
+      default: true
+    },
     data: {
       type: Array,
       default: null
@@ -78,7 +86,9 @@ export default {
       this.scroll = new BetterScroll(this.$refs.wrapper, {
         probeType: this.probeType,
         click: this.click,
-        stopPropagation: this.stopPropagation
+        stopPropagation: this.stopPropagation,
+        scrollX: this.scrollX,
+        scrollY: this.scrollY
       })
 
       if (this.listenScroll) {

@@ -71,7 +71,7 @@
             </ul>
           </div>
 
-          <div class="seller">
+          <div class="m-header-seller">
             <div class="title-wrap">
               <div class="title">
                 商家公告
@@ -239,8 +239,7 @@ export default {
         margin-right 12px
       .text
         flex 1
-        font-size 20px
-        height 20px
+        font-size 18px
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -302,7 +301,7 @@ export default {
               margin-bottom 0
             .brand-map
               margin-right 12px
-      .seller
+      .m-header-seller
         .seller-bulletin
           font-size 24px
           line-height 52px
