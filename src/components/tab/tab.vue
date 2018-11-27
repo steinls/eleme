@@ -1,5 +1,6 @@
 <template>
   <div class="tab">
+    <div class="state"></div>
     <router-link tag="div" class="tab-item" to="/goods">
       <span>商品</span>
     </router-link>
@@ -22,6 +23,7 @@ export default {
 <style lang="stylus">
 @import '../../common/stylus/mixin.styl'
 .tab
+  position relative
   display:flex
   width:100%
   height:80px
@@ -33,6 +35,14 @@ export default {
     display:flex
     align-items:center
     justify-content:space-around
+    span
+      padding 10px 0
     &.router-link-active
-      color:#f01414
+      color #f01414
+  .state
+    position absolute
+    top 64px
+    height 6px
+    width 40px
+    background rgb(156, 156, 250)
 </style>

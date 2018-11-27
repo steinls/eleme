@@ -1,5 +1,5 @@
 <template>
-  <div class="seller">
+  <b-scroll class="seller">
     <div class="seller-wrap">
       <div class="top">
         <div class="sell-wrap">
@@ -10,7 +10,7 @@
           </div>
         </div>
 
-        <div class="favorite-wrap">
+        <div class="favorite-wrap" @click="tagFavorite" :class="{active: isFavorite}">
           <div class="icon icon-favorite"></div>
           <div class="text">已收藏</div>
         </div>
@@ -55,15 +55,22 @@
       <div class="title">
         商家实景
       </div>
-      <b-scroll ref="views" :scrollX="true" class="views">
-        <div class="views-cont" ref="viewsCont" >
-          <!-- <div ref="view" class="view" v-for="(item, key) in seller.pics" :key="key">
-            <img :src="item" alt="">
-          </div> -->
+      <b-scroll ref="views" :scrollY="false" :scrollX="true" class="views">
+        <div ref="view" class="view" v-for="(item, key) in seller.pics" :key="key">
+          <img :src="item" alt="">
         </div>
       </b-scroll>
     </div>
-  </div>
+
+    <div class="seller-info-wrap border-wrap-2px">
+      <div class="title">商家信息</div>
+      <div class="seller-info">
+        <div class="seller-info-item" v-for="(item, key) in seller.infos">
+          {{item}}
+        </div>
+      </div>
+    </div>
+  </b-scroll>
 </template>
 <script>
 import Star from 'components/star/star.vue'
@@ -71,6 +78,11 @@ import BrandMap from 'components/brand-map/brand-map.vue'
 import BScroll from 'base/b-scroll/b-scroll.vue'
 
 export default {
+  data(){
+    return {
+      isFavorite: true
+    }
+  },
   props: {
     seller: {
       type: Object,
@@ -79,13 +91,16 @@ export default {
   },
   mounted(){
     this.$nextTick(() => {
-      // console.log(this.$refs.viewsCont)
-      // let width = this.$refs.view.clientWidth
-      // this.$refs.viewsCont.style.background = 'red'
-      // this.$refs.viewsCont.style.width = 2000 + 'px'
-      // this.$refs.views.refresh()
-
+      let width = this.$refs.view[0].clientWidth
+      this.$refs.views.$el.childNodes[0].style.width = width * this.seller.pics.length + 'px'
+      this.$refs.views.$el.childNodes[0].style.display = 'flex'
+      this.$refs.views.refresh()
     })
+  },
+  methods: {
+    tagFavorite(){
+      this.isFavorite = !this.isFavorite
+    }
   },
   components: {
     Star,
@@ -109,6 +124,7 @@ export default {
     padding 0 36px
     border-top 2px solid #e6e7e8
     border-bottom 2px solid #e6e7e8
+    background #ffffff
     .title
         font-size 28px
         color #07111b
@@ -139,8 +155,10 @@ export default {
       .favorite-wrap
         font-size 42px
         text-align center
-        .icon
+        &.active .icon
           color #f01414
+        .icon
+          color gray
           margin-bottom 10px
         .text
           font-size 18px
@@ -164,7 +182,6 @@ export default {
             font-size 38px
   .bulletin-wrap
     box-sizing border-box
-    background #ffffff
     margin-bottom 33px
     .bulletin
       padding 36px 0
@@ -187,22 +204,32 @@ export default {
         margin-left 12px
   .overview
     height 304px
-    background #ffffff
     padding-top 33px
+    margin-bottom 33px
     .title
       margin-bottom 33px
     .views
-      width 200px
+      width 100%
       height 180px
-      overview auto
-      .views-cont
-        width 400px
-        height 400px
-        background red
-        // .view
-        //   width 240px
-        //   height 180px
-        //   padding-right 12px
-        //   &:last-child
-        //     padding-right 0
+      overview hidden
+      .view
+        width 240px
+        height 180px
+        padding-right 12px
+        &:last-child
+          padding-right 0
+        img
+          width 100%
+          height 100%
+  .seller-info-wrap
+    padding-top 36px
+    .seller-info
+      margin-top 24px
+      padding 0 36px
+      .seller-info-item
+        padding 36px 22px
+        font-size 24px
+        line-height 36px
+        color #07111b
+        border-1px-t(#e6e7e8)
 </style>
