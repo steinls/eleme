@@ -40,7 +40,7 @@
                 @enter="dropEnter"
                 @after-enter="dropAfterenter"
               >
-                <div class="ball-wrap" ref="ballWrap" v-for="(item, key) in balls" :key="key" v-if="item.show">
+                <div class="ball-wrap" ref="ballWrap" v-for="item of balls" :key="item" v-if="item.show">
                   <div class="ball"></div>
                 </div>
               </transition-group>

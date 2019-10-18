@@ -65,7 +65,7 @@
     <div class="seller-info-wrap border-wrap-2px">
       <div class="title">商家信息</div>
       <div class="seller-info">
-        <div class="seller-info-item" v-for="(item, key) in seller.infos">
+        <div class="seller-info-item" v-for="(item, key) in seller.infos" :key="key">
           {{item}}
         </div>
       </div>
